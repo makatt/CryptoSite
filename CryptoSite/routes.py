@@ -77,7 +77,8 @@ def news():
     """Renders the bitcoin page."""
     return dict(
         title='История Биткойна',
-        year=datetime.now().year
+        year=datetime.now().year,
+        decentralization='/decentralization',
     )
 
 @route('/litecoin')
