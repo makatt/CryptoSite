@@ -1,7 +1,3 @@
-"""
-Routes and views for the bottle application.
-"""
-
 from bottle import route, view
 from datetime import datetime
 
@@ -82,5 +78,3 @@ def news():
         title='История Лайткойна',
         year=datetime.now().year
     )
-
-
