@@ -11,16 +11,16 @@ from datetime import datetime
 def home():
     """Renders the home page."""
     return dict(
-        year=datetime.now().year,
-        coindesk='https://www.coindesk.com',
-        coinbase_learn='https://www.coinbase.com/learn',
-        coinmarketcap='https://coinmarketcap.com',
-        trezor='https://www.trezor.io',
-        bitcoin_org='https://bitcoin.org',
-        ethereum_org='https://ethereum.org',
-        litecoin_org='https://litecoin.org',
-        coindesk_news='https://www.coindesk.com',
-        bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'
+        year=datetime.now().year,  # Текущий год
+        coindesk='https://www.coindesk.com',  # Сайт CoinDesk
+        coinbase_learn='https://www.coinbase.com/learn',  # Обучение от Coinbase
+        coinmarketcap='https://coinmarketcap.com',  # CoinMarketCap
+        trezor='https://www.trezor.io',  # Официальный сайт Trezor
+        bitcoin_info='/bitcoin',  # Внутренняя ссылка на страницу о Биткойне
+        ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
+        litecoin_info='/litecoin',  # Внутренняя ссылка на страницу о Лайткойне
+        coindesk_news='https://www.coindesk.com',  # Новости от CoinDesk
+        bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'  # Как работает Биткойн
     )
 
 @route('/contact')
