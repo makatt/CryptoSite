@@ -18,9 +18,10 @@ def home():
         trezor='https://www.trezor.io',
         bitcoin_info='/bitcoin',
         ethereum_org='https://ethereum.org',
-        litecoin_org='https://litecoin.org',
+        litecoin_info='/litecoin',
         coindesk_news='https://www.coindesk.com',
         bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'
+
     )
 
 @route('/contact')
@@ -48,5 +49,14 @@ def news():
     """Renders the about page."""
     return dict(
         title='История Биткойна',
+        year=datetime.now().year
+    )
+
+@route('/litecoin')
+@view('litecoin')
+def news():
+    """Renders the about page."""
+    return dict(
+        title='История Лайткойна',
         year=datetime.now().year
     )
