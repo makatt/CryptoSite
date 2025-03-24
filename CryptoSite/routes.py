@@ -19,7 +19,6 @@ def home():
         litecoin_info='/litecoin',
         coindesk_news='https://www.coindesk.com',
         bitcoin_how_it_works='/how-it-works'
-
     )
 
 @route('/ethereum')
@@ -88,7 +87,7 @@ def news():
 
 @route('/bitcoin')
 @view('bitcoin')
-def news():
+def bitcoin():
     """Renders the bitcoin page."""
     return dict(
         title='История Биткойна',
@@ -98,16 +97,21 @@ def news():
 
 @route('/litecoin')
 @view('litecoin')
-def news():
+def litecoin():
     """Renders the about page."""
     return dict(
         title='История Лайткойна',
-        year=datetime.now().year
+        year=datetime.now().year,
+                binance='https://binance.org/',
+        coinbase='https://www.coinbase.com/',
+        kraken='https://kraken.com/',
+        litecoin_official='https://litecoin.org',
+        reddit='https://reddi.com/litecoin'
     )
 
 @route('/how-it-works')
 @view('howitworks')
-def news():
+def how_it_works():
     """Renders the about page."""
     return dict(
         title='История Лайткойна',
