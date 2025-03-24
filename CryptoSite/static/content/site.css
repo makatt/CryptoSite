@@ -317,3 +317,12 @@ footer {
     .news-item .btn-info:hover {
         background-color: #138496;
     }
+
+.list-group-item-ltc {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #191709;
+    border: 1px solid #ddd;
+}

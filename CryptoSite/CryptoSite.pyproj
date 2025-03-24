@@ -65,10 +65,20 @@
     <Content Include="static\scripts\respond.js" />
     <Content Include="static\scripts\respond.min.js" />
     <Content Include="static\scripts\_references.js" />
+    <Content Include="views\bitcoin.tpl">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\decentralization.tpl">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\litecoin.tpl" />
     <Content Include="views\news.tpl" />
     <Content Include="views\contact.tpl" />
     <Content Include="views\index.tpl" />
     <Content Include="views\layout.tpl" />
+    <Content Include="views\smart_contracts.tpl">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

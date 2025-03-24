@@ -38,7 +38,7 @@
     <div class="col-md-12">
         <h2>Как работает криптовалюта</h2>
         <p>Узнайте основы технологии блокчейн и как криптовалюты добываются, торгуются и хранятся. Откройте для себя, как децентрализованные сети дают возможности людям и исключают необходимость в посредниках.</p>
-        <p><a class="btn btn-success" href="{{ bitcoin_how_it_works }}">Узнать больше &raquo;</a></p>
+        <p><a class="btn btn-success" href="{{ how_it_works }}">Узнать больше &raquo;</a></p>
     </div>
 </div>
 
@@ -53,7 +53,7 @@
         <div class="crypto-item">
             <h3>Эфириум (ETH)</h3>
             <p>Эфириум - децентрализованная платформа, на которой работают смарт-контракты, позволяя разработчикам создавать децентрализованные приложения (DApps).</p>
-            <p><a class="btn btn-warning" href="{{ ethereum_org }}">Узнать больше &raquo;</a></p>
+            <p><a class="btn btn-warning" href="{{ ethereum_page }}">Узнать больше &raquo;</a></p>
         </div>
         <div class="crypto-item">
             <h3>Лайткойн (LTC)</h3>
