@@ -53,7 +53,7 @@
         <div class="crypto-item">
             <h3>Эфириум (ETH)</h3>
             <p>Эфириум - децентрализованная платформа, на которой работают смарт-контракты, позволяя разработчикам создавать децентрализованные приложения (DApps).</p>
-            <p><a class="btn btn-warning" href="{{ ethereum_org }}">Узнать больше &raquo;</a></p>
+            <p><a class="btn btn-warning" href="{{ ethereum_page }}">Узнать больше &raquo;</a></p>
         </div>
         <div class="crypto-item">
             <h3>Лайткойн (LTC)</h3>

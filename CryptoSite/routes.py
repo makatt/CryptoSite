@@ -18,9 +18,27 @@ def home():
         trezor='https://www.trezor.io',
         bitcoin_org='https://bitcoin.org',
         ethereum_org='https://ethereum.org',
+        ethereum_page='/ethereum',
         litecoin_org='https://litecoin.org',
         coindesk_news='https://www.coindesk.com',
         bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'
+    )
+
+
+@route('/ethereum')
+@view('ethereum')
+def ethereum():
+    """Renders the home page."""
+    return dict(
+        year=datetime.now().year,  # Передаем текущий год
+        ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
+        ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
+        ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
+        ethereum_dapps='https://ethereum.org/dapps',  # Децентрализованные приложения (DApps)
+        ethereum_how_it_works='https://ethereum.org/how-it-works',  # Как работает Ethereum
+        ethereum_whitepaper='https://ethereum.org/whitepaper',  # Официальный Whitepaper
+        ethereum_github='https://github.com/ethereum',  # Исходный код на GitHub
+        ethereum_community='https://ethereum.org/community'  # Сообщество Ethereum
     )
 
 @route('/contact')
