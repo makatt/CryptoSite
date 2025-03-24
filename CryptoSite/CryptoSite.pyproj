@@ -68,6 +68,7 @@
     <Content Include="views\bitcoin.tpl">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="views\litecoin.tpl" />
     <Content Include="views\news.tpl" />
     <Content Include="views\contact.tpl" />
     <Content Include="views\index.tpl" />
