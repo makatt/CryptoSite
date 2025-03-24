@@ -45,11 +45,15 @@
 <div class="row featured-cryptos">
     <div class="col-md-12">
         <h2>Выделенные криптовалюты</h2>
-        <div class="crypto-item">
-            <h3>Биткойн (BTC)</h3>
-            <p>Биткойн - первая и наиболее широко признанная криптовалюта, выпущенная в 2009 году анонимным лицом или группой под именем Сатоши Накамото.</p>
-            <p><a class="btn btn-warning" href="{{ bitcoin_info }}">Узнать больше &raquo;</a></p>
-        </div>
+<div class="crypto-item">
+<img src="/static/images/bitcoin.svg" alt="Bitcoin Logo" style="height: 2em; vertical-align: middle; margin-left: 10px;">
+<p></p>
+    <h3 style="display: inline-block;">Биткойн (BTC)</h3>
+    <p>Биткойн - первая и наиболее широко признанная криптовалюта, выпущенная в 2009 году анонимным лицом или группой под именем Сатоши Накамото.</p>
+    <p><a class="btn btn-warning" href="{{ bitcoin_info }}">Узнать больше &raquo;</a></p>
+</div>
+
+
         <div class="crypto-item">
             <h3>Эфириум (ETH)</h3>
             <p>Эфириум - децентрализованная платформа, на которой работают смарт-контракты, позволяя разработчикам создавать децентрализованные приложения (DApps).</p>
