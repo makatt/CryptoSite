@@ -16,12 +16,17 @@ def home():
         coinbase_learn='https://www.coinbase.com/learn',
         coinmarketcap='https://coinmarketcap.com',
         trezor='https://www.trezor.io',
-        bitcoin_org='https://bitcoin.org',
+        bitcoin_info='/bitcoin',
         ethereum_org='https://ethereum.org',
+<<<<<<< HEAD
         ethereum_page='/ethereum',
         litecoin_org='https://litecoin.org',
+=======
+        litecoin_info='/litecoin',
+>>>>>>> 68a1a3986e007fbb1115dc73e9b63e86140c6bbf
         coindesk_news='https://www.coindesk.com',
         bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'
+
     )
 
 
@@ -54,8 +59,28 @@ def contact():
 @route('/news')
 @view('news')
 def news():
-    """Renders the about page."""
+    """Renders the news page."""
     return dict(
         title='Новости',
         year=datetime.now().year
     )
+
+@route('/bitcoin')
+@view('bitcoin')
+def news():
+    """Renders the bitcoin page."""
+    return dict(
+        title='История Биткойна',
+        year=datetime.now().year
+    )
+
+@route('/litecoin')
+@view('litecoin')
+def news():
+    """Renders the about page."""
+    return dict(
+        title='История Лайткойна',
+        year=datetime.now().year
+    )
+
+

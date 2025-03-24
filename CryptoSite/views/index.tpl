@@ -48,7 +48,7 @@
         <div class="crypto-item">
             <h3>Биткойн (BTC)</h3>
             <p>Биткойн - первая и наиболее широко признанная криптовалюта, выпущенная в 2009 году анонимным лицом или группой под именем Сатоши Накамото.</p>
-            <p><a class="btn btn-warning" href="{{ bitcoin_org }}">Узнать больше &raquo;</a></p>
+            <p><a class="btn btn-warning" href="{{ bitcoin_info }}">Узнать больше &raquo;</a></p>
         </div>
         <div class="crypto-item">
             <h3>Эфириум (ETH)</h3>
@@ -58,7 +58,7 @@
         <div class="crypto-item">
             <h3>Лайткойн (LTC)</h3>
             <p>Лайткойн - криптовалюта с пиринговой сетью и открытым исходным кодом, обеспечивающая более быстрые транзакции с использованием другого алгоритма хеширования.</p>
-            <p><a class="btn btn-warning" href="{{ litecoin_org }}">Узнать больше &raquo;</a></p>
+            <p><a class="btn btn-warning" href="{{ litecoin_info }}">Узнать больше &raquo;</a></p>
         </div>
     </div>
 </div>
