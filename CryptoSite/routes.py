@@ -1,3 +1,7 @@
+"""
+Routes and views for the bottle application.
+"""
+
 from bottle import route, view
 from datetime import datetime
 
@@ -7,50 +11,16 @@ from datetime import datetime
 def home():
     """Renders the home page."""
     return dict(
-        year=datetime.now().year,
-        coindesk='https://www.coindesk.com',
-        coinbase_learn='https://www.coinbase.com/learn',
-        coinmarketcap='https://coinmarketcap.com',
-        trezor='https://www.trezor.io',
-        bitcoin_info='/bitcoin',
-        ethereum_org='https://ethereum.org',
-        ethereum_page='/ethereum',
-        litecoin_org='https://litecoin.org',
-        litecoin_info='/litecoin',
-        coindesk_news='https://www.coindesk.com',
-        how_it_works='/howitwork'
-
-    )
-
-@route('/ethereum')
-@view('ethereum')
-def ethereum():
-    """Renders the home page."""
-    return dict(
-        year=datetime.now().year,
-        decentralization='/decentralization',
+        year=datetime.now().year,  # Текущий год
+        coindesk='https://www.coindesk.com',  # Сайт CoinDesk
+        coinbase_learn='https://www.coinbase.com/learn',  # Обучение от Coinbase
+        coinmarketcap='https://coinmarketcap.com',  # CoinMarketCap
+        trezor='https://www.trezor.io',  # Официальный сайт Trezor
+        bitcoin_info='/bitcoin',  # Внутренняя ссылка на страницу о Биткойне
         ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
-        ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
-        ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
-        ethereum_dapps='https://ethereum.org/dapps',  # Децентрализованные приложения (DApps)
-        ethereum_how_it_works='https://ethereum.org/en/staking/#what-is-staking',  # Как работает Ethereum
-        ethereum_whitepaper='https://ethereum.org/whitepaper',  # Официальный Whitepaper
-        ethereum_github='https://github.com/ethereum',  # Исходный код на GitHub
-        ethereum_community='https://ethereum.org/community'  # Сообщество Ethereum
-    )
-
-@route('/decentralization')
-@view('decentralization')
-def decentralization():
-    """Renders the decentralization page."""
-    return dict(
-        year=datetime.now().year,  
-        decentralization_wiki='https://ru.wikipedia.org/wiki/Децентрализация',  # Ссылка на Википедию
-        decentralization_basics='https://www.investopedia.com/terms/d/decentralization.asp',  # Основы децентрализации
-        blockchain_decentralization='https://www.coindesk.com/learn/what-is-decentralization-why-is-it-important',  # Децентрализация в блокчейне
-        decentralization_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-decentralization-in-blockchain',  # Преимущества децентрализации
-        decentralization_examples='https://www.blockchain-council.org/blockchain/examples-of-decentralized-systems-you-must-know',  # Примеры децентрализованных систем
-        decentralization_how_it_works='https://www.ibm.com/topics/decentralization'  # Как работает децентрализация
+        litecoin_info='/litecoin',  # Внутренняя ссылка на страницу о Лайткойне
+        coindesk_news='https://www.coindesk.com',  # Новости от CoinDesk
+        bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'  # Как работает Биткойн
     )
 
 @route('/contact')
@@ -58,42 +28,16 @@ def decentralization():
 def contact():
     """Renders the contact page."""
     return dict(
-        title='Контакты',
+        title='Contact',
+        message='Your contact page.',
         year=datetime.now().year
     )
 
 @route('/news')
 @view('news')
 def news():
-    """Renders the news page."""
+    """Renders the about page."""
     return dict(
         title='Новости',
-        year=datetime.now().year
-    )
-
-@route('/bitcoin')
-@view('bitcoin')
-def news():
-    """Renders the bitcoin page."""
-    return dict(
-        title='История Биткойна',
-        year=datetime.now().year,
-        decentralization='/decentralization',
-    )
-
-@route('/litecoin')
-@view('litecoin')
-def news():
-    """Renders the about page."""
-    return dict(
-        title='История Лайткойна',
-        year=datetime.now().year
-    )
-@route('/howitwork')
-@view('howitwork')
-def news():
-    """Renders the about page."""
-    return dict(
-        title='Как работает крипта',
         year=datetime.now().year
     )
