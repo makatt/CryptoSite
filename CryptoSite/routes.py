@@ -29,6 +29,7 @@ def ethereum():
     return dict(
         year=datetime.now().year,
         decentralization='/decentralization',
+        smart_contracts='/smart_contracts',
         ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
         ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
         ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
@@ -51,6 +52,20 @@ def decentralization():
         decentralization_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-decentralization-in-blockchain',  # Преимущества децентрализации
         decentralization_examples='https://www.blockchain-council.org/blockchain/examples-of-decentralized-systems-you-must-know',  # Примеры децентрализованных систем
         decentralization_how_it_works='https://www.ibm.com/topics/decentralization'  # Как работает децентрализация
+    )
+
+@route('/smart_contracts')
+@view('smart_contracts')
+def smart_contracts():
+    """Renders the smart contracts page."""
+    return dict(
+        year=datetime.now().year,
+        smart_contracts_wiki='https://ru.wikipedia.org/wiki/Смарт-контракт',  # Ссылка на Википедию
+        smart_contracts_basics='https://www.investopedia.com/terms/s/smart-contracts.asp',  # Основы смарт-контрактов
+        smart_contracts_how_it_works='https://www.ibm.com/topics/smart-contracts',  # Как работают смарт-контракты
+        smart_contracts_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-smart-contracts',  # Преимущества смарт-контрактов
+        smart_contracts_examples='https://www.blockchain-council.org/blockchain/smart-contract-examples',  # Примеры использования
+        smart_contracts_creation='https://ethereum.org/en/developers/docs/smart-contracts'  # Создание смарт-контрактов
     )
 
 @route('/contact')

@@ -12,7 +12,7 @@
         <p>
             Ethereum — это блокчейн-платформа, которая позволяет создавать и выполнять смарт-контракты без необходимости доверять третьим сторонам. Это вторая по популярности криптовалюта после Bitcoin.
         </p>
-        <p><a class="btn btn-default" href="{{ ethereum_what_is }}">Узнать больше &raquo;</a></p>
+        <p><a class="btn btn-default" href="{{ smart_contracts }}">Узнать больше &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Смарт-контракты</h2>
@@ -53,7 +53,7 @@
         <div class="crypto-item">
             <h3>Смарт-контракты</h3>
             <p>Смарт-контракты Ethereum позволяют автоматизировать процессы, устраняя необходимость в посредниках.</p>
-            <p><a class="btn btn-default" href="{{ ethereum_what_is }}">Узнать больше &raquo;</a></p>
+            <p><a class="btn btn-default" href="{{ smart_contracts }}">Узнать больше &raquo;</a></p>
         </div>
         <div class="crypto-item">
             <h3>Эфир (ETH)</h3>
