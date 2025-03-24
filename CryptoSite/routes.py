@@ -28,6 +28,7 @@ def ethereum():
     """Renders the home page."""
     return dict(
         year=datetime.now().year,
+        decentralization='/decentralization',
         ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
         ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
         ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
@@ -36,6 +37,20 @@ def ethereum():
         ethereum_whitepaper='https://ethereum.org/whitepaper',  # Официальный Whitepaper
         ethereum_github='https://github.com/ethereum',  # Исходный код на GitHub
         ethereum_community='https://ethereum.org/community'  # Сообщество Ethereum
+    )
+
+@route('/decentralization')
+@view('decentralization')
+def decentralization():
+    """Renders the decentralization page."""
+    return dict(
+        year=datetime.now().year,  
+        decentralization_wiki='https://ru.wikipedia.org/wiki/Децентрализация',  # Ссылка на Википедию
+        decentralization_basics='https://www.investopedia.com/terms/d/decentralization.asp',  # Основы децентрализации
+        blockchain_decentralization='https://www.coindesk.com/learn/what-is-decentralization-why-is-it-important',  # Децентрализация в блокчейне
+        decentralization_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-decentralization-in-blockchain',  # Преимущества децентрализации
+        decentralization_examples='https://www.blockchain-council.org/blockchain/examples-of-decentralized-systems-you-must-know',  # Примеры децентрализованных систем
+        decentralization_how_it_works='https://www.ibm.com/topics/decentralization'  # Как работает децентрализация
     )
 
 @route('/contact')

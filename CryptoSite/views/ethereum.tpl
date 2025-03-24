@@ -48,6 +48,7 @@
         <div class="crypto-item">
             <h3>Децентрализация</h3>
             <p>Ethereum работает на тысячах узлов по всему миру, что делает его устойчивым к цензуре и атакам.</p>
+            <p><a class="btn btn-default" href="{{ decentralization }}">Узнать больше &raquo;</a></p>
         </div>
         <div class="crypto-item">
             <h3>Смарт-контракты</h3>
