@@ -14,12 +14,9 @@ def home():
         trezor='https://www.trezor.io',
         bitcoin_info='/bitcoin',
         ethereum_org='https://ethereum.org',
-<<<<<<< HEAD
         ethereum_page='/ethereum',
         litecoin_org='https://litecoin.org',
-=======
         litecoin_info='/litecoin',
->>>>>>> 68a1a3986e007fbb1115dc73e9b63e86140c6bbf
         coindesk_news='https://www.coindesk.com',
         bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'
 
