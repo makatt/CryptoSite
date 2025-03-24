@@ -68,7 +68,7 @@
     <Content Include="views\bitcoin.tpl">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="views\howitwork.tpl">
+    <Content Include="views\decentralization.tpl">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\litecoin.tpl" />
