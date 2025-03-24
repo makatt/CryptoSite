@@ -4,6 +4,43 @@
     <div class="col-md-12">
         <h2>Bitcoin: Основная информация</h2>
 
+        <!-- График Bitcoin из TradingView -->
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            {
+                "symbols": [
+                    ["Bitcoin","BTCUSD"]
+                ],
+                "chartOnly": false,
+                "width": "100%",
+                "height": "500",
+                "locale": "ru",
+                "colorTheme": "light",
+                "autosize": true,
+                "showVolume": true,
+                "showMA": true,
+                "hideDateRanges": false,
+                "hideMarketStatus": false,
+                "hideSymbolLogo": false,
+                "scalePosition": "right",
+                "scaleMode": "Normal",
+                "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                "fontSize": "10",
+                "noTimeScale": false,
+                "valuesTracking": "1",
+                "changeMode": "price-and-percent",
+                "chartType": "area",
+                "maLineColor": "#2962FF",
+                "maLineWidth": 1,
+                "maLength": 9,
+                "lineWidth": 2,
+                "lineType": 0
+            }
+            </script>
+        </div>
+        <!-- Конец графика -->
+
         <div class="bitcoin-info">
             <h3>Что такое Bitcoin?</h3>
             <p>
