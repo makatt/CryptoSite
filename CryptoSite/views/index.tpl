@@ -48,7 +48,7 @@
         <div class="crypto-item">
             <h3>Биткойн (BTC)</h3>
             <p>Биткойн - первая и наиболее широко признанная криптовалюта, выпущенная в 2009 году анонимным лицом или группой под именем Сатоши Накамото.</p>
-            <p><a class="btn btn-warning" href="{{ bitcoin_org }}">Узнать больше &raquo;</a></p>
+            <p><a class="btn btn-warning" href="{{ bitcoin_info }}">Узнать больше &raquo;</a></p>
         </div>
         <div class="crypto-item">
             <h3>Эфириум (ETH)</h3>

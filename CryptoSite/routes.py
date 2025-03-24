@@ -16,7 +16,7 @@ def home():
         coinbase_learn='https://www.coinbase.com/learn',
         coinmarketcap='https://coinmarketcap.com',
         trezor='https://www.trezor.io',
-        bitcoin_org='https://bitcoin.org',
+        bitcoin_info='/bitcoin',
         ethereum_org='https://ethereum.org',
         litecoin_org='https://litecoin.org',
         coindesk_news='https://www.coindesk.com',
