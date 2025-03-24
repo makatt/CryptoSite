@@ -36,7 +36,7 @@ def contact():
 @route('/news')
 @view('news')
 def news():
-    """Renders the about page."""
+    """Renders the news page."""
     return dict(
         title='Новости',
         year=datetime.now().year
@@ -45,7 +45,7 @@ def news():
 @route('/bitcoin')
 @view('bitcoin')
 def news():
-    """Renders the about page."""
+    """Renders the bitcoin page."""
     return dict(
         title='История Биткойна',
         year=datetime.now().year
