@@ -41,3 +41,12 @@ def news():
         title='Новости',
         year=datetime.now().year
     )
+
+@route('/bitcoin')
+@view('bitcoin')
+def news():
+    """Renders the about page."""
+    return dict(
+        title='История Биткойна',
+        year=datetime.now().year
+    )
