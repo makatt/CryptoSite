@@ -61,9 +61,9 @@
             <h2>Где купить Лайткойн</h2>
             <p>Лайткойн можно приобрести на большинстве крупных криптовалютных бирж, таких как:</p>
             <ul class="list-group">
-                <li class="list-group-item-ltc"><a href="https://www.binance.com" target="_blank">Binance</a></li>
-                <li class="list-group-item-ltc"><a href="https://www.coinbase.com" target="_blank">Coinbase</a></li>
-                <li class="list-group-item-ltc"><a href="https://www.kraken.com" target="_blank">Kraken</a></li>
+                <li class="list-group-item-ltc"><a href="{{ binance }}" target="_blank">Binance</a></li>
+                <li class="list-group-item-ltc"><a href="{{ coinbase }}" target="_blank">Coinbase</a></li>
+                <li class="list-group-item-ltc"><a href="{{ kraken }}" target="_blank">Kraken</a></li>
             </ul>
         </div>
     </div>
@@ -73,8 +73,8 @@
             <h2>Дополнительные ресурсы</h2>
             <p>Узнайте больше о Лайткойн на официальном сайте и в сообществе:</p>
             <ul class="list-group">
-                <li class="list-group-item-ltc"><a href="https://litecoin.org" target="_blank">Официальный сайт Лайткойн</a></li>
-                <li class="list-group-item-ltc"><a href="https://reddit.com/r/litecoin" target="_blank">Сообщество на Reddit</a></li>
+                <li class="list-group-item-ltc"><a href="{{ litecoin_official }}" target="_blank">Официальный сайт Лайткойн</a></li>
+                <li class="list-group-item-ltc"><a href="{{ reddit }}" target="_blank">Сообщество на Reddit</a></li>
             </ul>
         </div>
     </div>
