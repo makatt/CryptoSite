@@ -37,7 +37,8 @@ def ethereum():
         ethereum_how_it_works='https://ethereum.org/en/staking/#what-is-staking',  # Как работает Ethereum
         ethereum_whitepaper='https://ethereum.org/whitepaper',  # Официальный Whitepaper
         ethereum_github='https://github.com/ethereum',  # Исходный код на GitHub
-        ethereum_community='https://ethereum.org/community'  # Сообщество Ethereum
+        ethereum_community='https://ethereum.org/community', # Сообщество Ethereum
+        ethereum_graphic = 'https://ru.tradingview.com/chart/?symbol=BINANCE%3AETHUSDt'
     )
 
 @route('/decentralization')
