@@ -60,3 +60,5 @@ def news():
         title='История Лайткойна',
         year=datetime.now().year
     )
+
+
