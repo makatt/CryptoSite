@@ -18,7 +18,7 @@ def home():
         litecoin_org='https://litecoin.org',
         litecoin_info='/litecoin',
         coindesk_news='https://www.coindesk.com',
-        bitcoin_how_it_works='https://www.bitcoin.org/en/how-it-works'
+        bitcoin_how_it_works='/how-it-works'
 
     )
 
@@ -98,6 +98,15 @@ def news():
 
 @route('/litecoin')
 @view('litecoin')
+def news():
+    """Renders the about page."""
+    return dict(
+        title='История Лайткойна',
+        year=datetime.now().year
+    )
+
+@route('/how-it-works')
+@view('howitworks')
 def news():
     """Renders the about page."""
     return dict(
