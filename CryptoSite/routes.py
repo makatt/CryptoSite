@@ -33,7 +33,7 @@ def ethereum():
         ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
         ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
         ethereum_dapps='https://ethereum.org/dapps',  # Децентрализованные приложения (DApps)
-        ethereum_how_it_works='https://ethereum.org/how-it-works',  # Как работает Ethereum
+        ethereum_how_it_works='https://ethereum.org/en/staking/#what-is-staking',  # Как работает Ethereum
         ethereum_whitepaper='https://ethereum.org/whitepaper',  # Официальный Whitepaper
         ethereum_github='https://github.com/ethereum',  # Исходный код на GitHub
         ethereum_community='https://ethereum.org/community'  # Сообщество Ethereum
