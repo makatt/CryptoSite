@@ -102,5 +102,10 @@ def news():
     """Renders the about page."""
     return dict(
         title='История Лайткойна',
-        year=datetime.now().year
+        year=datetime.now().year,
+        binance='https://www.binance.com',
+        coinbase='https://www.coinbase.com',
+        kraken='https://www.kraken.com',
+        litecoin_official='https://litecoin.org',
+        reddit='https://reddit.com/r/litecoin'
     )
