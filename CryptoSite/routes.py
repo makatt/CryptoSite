@@ -22,13 +22,12 @@ def home():
 
     )
 
-
 @route('/ethereum')
 @view('ethereum')
 def ethereum():
     """Renders the home page."""
     return dict(
-        year=datetime.now().year,  # Передаем текущий год
+        year=datetime.now().year,
         ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
         ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
         ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
@@ -44,8 +43,7 @@ def ethereum():
 def contact():
     """Renders the contact page."""
     return dict(
-        title='Contact',
-        message='Your contact page.',
+        title='Контакты',
         year=datetime.now().year
     )
 

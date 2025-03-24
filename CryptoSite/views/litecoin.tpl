@@ -10,19 +10,19 @@
         <div class="col-md-8">
             <h2>Основные особенности Лайткойн</h2>
             <ul class="list-group">
-                <li class="list-group-item">
+                <li class="list-group-item-ltc">
                     <strong>Быстрые транзакции:</strong> Лайткойн использует алгоритм хеширования Scrypt, который позволяет обрабатывать транзакции быстрее, чем Биткойн. Время создания блока — около 2,5 минут.
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item-ltc">
                     <strong>Децентрализация:</strong> Как и Биткойн, Лайткойн работает на основе децентрализованной блокчейн-сети, что обеспечивает безопасность и прозрачность транзакций.
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item-ltc">
                     <strong>Ограниченная эмиссия:</strong> Максимальное количество монет Лайткойн ограничено 84 миллионами.
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item-ltc">
                     <strong>Низкие комиссии:</strong> Благодаря высокой скорости обработки транзакций, комиссии в сети Лайткойн остаются низкими.
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item-ltc">
                     <strong>Активное сообщество:</strong> Лайткойн имеет сильное сообщество разработчиков и пользователей, которые продолжают развивать экосистему.
                 </li>
             </ul>
@@ -61,9 +61,9 @@
             <h2>Где купить Лайткойн</h2>
             <p>Лайткойн можно приобрести на большинстве крупных криптовалютных бирж, таких как:</p>
             <ul class="list-group">
-                <li class="list-group-item"><a href="https://www.binance.com" target="_blank">Binance</a></li>
-                <li class="list-group-item"><a href="https://www.coinbase.com" target="_blank">Coinbase</a></li>
-                <li class="list-group-item"><a href="https://www.kraken.com" target="_blank">Kraken</a></li>
+                <li class="list-group-item-ltc"><a href="https://www.binance.com" target="_blank">Binance</a></li>
+                <li class="list-group-item-ltc"><a href="https://www.coinbase.com" target="_blank">Coinbase</a></li>
+                <li class="list-group-item-ltc"><a href="https://www.kraken.com" target="_blank">Kraken</a></li>
             </ul>
         </div>
     </div>
@@ -73,8 +73,8 @@
             <h2>Дополнительные ресурсы</h2>
             <p>Узнайте больше о Лайткойн на официальном сайте и в сообществе:</p>
             <ul class="list-group">
-                <li class="list-group-item"><a href="https://litecoin.org" target="_blank">Официальный сайт Лайткойн</a></li>
-                <li class="list-group-item"><a href="https://reddit.com/r/litecoin" target="_blank">Сообщество на Reddit</a></li>
+                <li class="list-group-item-ltc"><a href="https://litecoin.org" target="_blank">Официальный сайт Лайткойн</a></li>
+                <li class="list-group-item-ltc"><a href="https://reddit.com/r/litecoin" target="_blank">Сообщество на Reddit</a></li>
             </ul>
         </div>
     </div>
