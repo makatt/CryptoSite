@@ -1,5 +1,8 @@
-from bottle import route, view
+from bottle import route, view, request, redirect
+import json
+import re
 from datetime import datetime
+import os
 
 @route('/')
 @route('/home')
@@ -117,4 +120,54 @@ def how_it_works():
     return dict(
         title='История Лайткойна',
         year=datetime.now().year
+    )
+
+
+ARTICLES_FILE = 'data/articles.json'
+
+def load_articles():
+    if not os.path.exists(ARTICLES_FILE):
+        return []
+    with open(ARTICLES_FILE, 'r', encoding='utf-8') as f:
+        return sorted(json.load(f), key=lambda x: x['date'], reverse=True)
+
+def save_articles(data):
+    with open(ARTICLES_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+@route('/articles', method=['GET', 'POST'])
+@view('articles')
+def articles():
+    error = ''
+    author = request.forms.get('author')
+    text = request.forms.get('text')
+    date = request.forms.get('date')
+    phone = request.forms.get('phone')
+
+    if request.method == 'POST':
+        # Валидация
+        if not author or not text or not date or not phone:
+            error = 'Все поля обязательны для заполнения.'
+        else:
+            try:
+                datetime.strptime(date, '%Y-%m-%d')
+                if not re.match(r'^\+?\d{11,15}$', phone):
+                    error = 'Телефон должен быть в международном формате, например +79991234567.'
+            except ValueError:
+                error = 'Дата должна быть в формате ГГГГ-ММ-ДД.'
+
+        if not error:
+            articles = load_articles()
+            articles.insert(0, {'author': author, 'text': text, 'date': date, 'phone': phone})
+            save_articles(articles)
+            print("Saving article and redirecting...")
+            redirect('/articles')
+
+    return dict(
+        articles=load_articles(),
+        error=error,
+        author=author,
+        text=text,
+        date=date,
+        phone=phone
     )
