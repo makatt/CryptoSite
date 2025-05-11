@@ -122,52 +122,58 @@ def how_it_works():
         year=datetime.now().year
     )
 
+#ПОЛЕЗНЫЕ СТАТЬИ
 
-ARTICLES_FILE = 'data/articles.json'
+ARTICLES_FILE = 'data/articles.json'  # путь к файлу с данными 
 
 def load_articles():
-    if not os.path.exists(ARTICLES_FILE):
+    try:
+        with open(ARTICLES_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
         return []
-    with open(ARTICLES_FILE, 'r', encoding='utf-8') as f:
-        return sorted(json.load(f), key=lambda x: x['date'], reverse=True)
 
-def save_articles(data):
+def save_articles(articles):
     with open(ARTICLES_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(articles, f, ensure_ascii=False, indent=4)
 
 @route('/articles', method=['GET', 'POST'])
 @view('articles')
 def articles():
     error = ''
-    author = request.forms.get('author')
-    text = request.forms.get('text')
-    date = request.forms.get('date')
-    phone = request.forms.get('phone')
+    author = text = date = phone = ''
+    articles = load_articles()
 
     if request.method == 'POST':
+        author = request.forms.get('author', '').strip()
+        text = request.forms.get('text', '').strip()
+        date = request.forms.get('date', '').strip()
+        phone = request.forms.get('phone', '').strip()
+
         # Валидация
         if not author or not text or not date or not phone:
-            error = 'Все поля обязательны для заполнения.'
+            error = 'Пожалуйста, заполните все поля.'
+        elif not re.match(r'^\+7\d{10}$', phone):
+            error = 'Телефон должен быть в формате +7XXXXXXXXXX'
+        elif not re.match(r'^\d{4}-\d{2}-\d{2}$', date):
+            error = 'Дата должна быть в формате ГГГГ-ММ-ДД'
         else:
-            try:
-                datetime.strptime(date, '%Y-%m-%d')
-                if not re.match(r'^\+?\d{11,15}$', phone):
-                    error = 'Телефон должен быть в международном формате, например +79991234567.'
-            except ValueError:
-                error = 'Дата должна быть в формате ГГГГ-ММ-ДД.'
-
-        if not error:
-            articles = load_articles()
-            articles.insert(0, {'author': author, 'text': text, 'date': date, 'phone': phone})
+            # Добавление статьи и сортировка по дате (свежие сверху)
+            articles.insert(0, {
+                'author': author,
+                'text': text,
+                'date': date,
+                'phone': phone
+            })
             save_articles(articles)
-            print("Saving article and redirecting...")
-            redirect('/articles')
+            redirect('/articles')  # Чтобы сбросить POST и очистить форму
 
-    return dict(
-        articles=load_articles(),
-        error=error,
-        author=author,
-        text=text,
-        date=date,
-        phone=phone
-    )
+    return {
+        'year': datetime.now().year,
+        'error': error,
+        'author': author,
+        'text': text,
+        'date': date,
+        'phone': phone,
+        'articles': articles
+    }
