@@ -7,6 +7,34 @@ from bottle import route, run, view, request, redirect, static_file
 import sys
 import io
 
+REVIEWS_FILE = 'data/reviews.json'
+
+def load_reviews():
+    """Загрузка отзывов из файла reviews.json"""
+    if not os.path.exists(REVIEWS_FILE):
+        return {}
+    try:
+        with open(REVIEWS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError, UnicodeDecodeError):
+        return {}
+
+def save_reviews(reviews_data):
+    """Сохранение отзывов в файл reviews.json"""
+    try:
+        with open(REVIEWS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(reviews_data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Ошибка сохранения отзывов: {e}")
+
+def validate_phone(phone):
+    """Проверяет формат +7XXXXXXXXXX"""
+    return bool(re.match(r'^\+7\d{10}$', phone))
+
+def validate_date(date_str):
+    """Проверяет формат ГГГГ-ММ-ДД"""
+    return bool(re.match(r'^\d{4}-\d{2}-\d{2}$', date_str))
+
 @route('/')
 @route('/home')
 @view('index')
@@ -92,15 +120,49 @@ def news():
         year=datetime.now().year
     )
 
-@route('/bitcoin')
+@route('/bitcoin', method=['GET', 'POST'])
 @view('bitcoin')
 def bitcoin():
-    """Renders the bitcoin page."""
-    return dict(
-        title='История Биткойна',
-        year=datetime.now().year,
-        decentralization='/decentralization',
-    )
+    title = 'История Биткойна'
+    year = datetime.now().year
+
+    reviews_all = load_reviews()
+    btc_reviews = reviews_all.get('bitcoin', [])
+
+    error = None
+    if request.method == 'POST':
+        name  = request.forms.get('name', '').strip()
+        text  = request.forms.get('text', '').strip()
+        phone = request.forms.get('phone', '').strip()
+
+        # Валидация
+        if not all([name, text, phone]):
+            error = 'Пожалуйста, заполните все поля.'
+        elif not validate_phone(phone):
+            error = 'Телефон должен быть в формате +7XXXXXXXXXX'
+        else:
+            # Дата теперь проставляем сами
+            date = datetime.now().strftime('%Y-%m-%d')
+            review = {
+                'name':  name,
+                'text':  text,
+                'date':  date,
+                'phone': phone
+            }
+            btc_reviews.insert(0, review)
+            reviews_all['bitcoin'] = btc_reviews
+            save_reviews(reviews_all)
+            redirect('/bitcoin')
+
+    return {
+        'title':     title,
+        'year':      year,
+        'reviews':   btc_reviews,
+        'error':     error,
+        'form_data': request.forms
+    }
+
+
 
 @route('/litecoin')
 @view('litecoin')

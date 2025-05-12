@@ -21,6 +21,9 @@
     <InterpreterId>
     </InterpreterId>
     <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,6 +55,9 @@
   <ItemGroup>
     <Content Include="data\articles.json" />
     <Content Include="data\newsdata.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="data\reviews.json">
       <SubType>Code</SubType>
     </Content>
     <Content Include="requirements.txt" />
