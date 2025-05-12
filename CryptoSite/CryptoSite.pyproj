@@ -55,6 +55,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="requirements.txt" />
+    <Content Include="static\content\articles.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />
     <Content Include="static\content\site.css" />
