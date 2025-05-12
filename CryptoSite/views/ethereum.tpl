@@ -26,6 +26,50 @@
     </div>
 </div>
 
+<div class="tradingview-widget-container mb-5">
+  <div class="tradingview-widget-container__widget mb-5"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+    "symbols": [
+      ["Ethereum", "ETHUSDT"]
+    ],
+    "chartOnly": false,
+    "width": "100%",
+    "height": "500",
+    "locale": "ru",
+    "colorTheme": "light",
+    "autosize": true,
+    "showVolume": true,
+    "showMA": true,
+    "hideDateRanges": false,
+    "hideMarketStatus": false,
+    "hideSymbolLogo": false,
+    "scalePosition": "right",
+    "scaleMode": "Normal",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+    "fontSize": "10",
+    "noTimeScale": false,
+    "valuesTracking": "1",
+    "changeMode": "price-and-percent",
+    "chartType": "area",
+    "maLineColor": "#2962FF",
+    "maLineWidth": 1,
+    "maLength": 9,
+    "lineWidth": 2,
+    "lineType": 0,
+    "backgroundColor": "rgba(255, 255, 255, 1)",
+    "gridLineColor": "rgba(240, 243, 250, 1)"
+  }
+  </script>
+</div>
+
+<div class="row news-section">
+    <div class="col-md-12">
+        <h2>График Ethereum</h2>
+        <p><a class="btn btn-info" href="{{ethereum_graphic}}">Полный график&raquo;</a></p>
+    </div>
+</div>
+
 <div class="row news-section">
     <div class="col-md-12">
         <h2>Новости Ethereum</h2>
