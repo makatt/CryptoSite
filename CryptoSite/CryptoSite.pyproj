@@ -36,6 +36,9 @@
     <Compile Include="test_validation.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="views\newspage.tpl">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="data\" />
@@ -48,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="data\articles.json" />
+    <Content Include="data\newsdata.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="requirements.txt" />
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />
@@ -82,9 +88,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\litecoin.tpl" />
-    <Content Include="views\novelties.tpl">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="views\news.tpl" />
     <Content Include="views\contact.tpl" />
     <Content Include="views\index.tpl" />

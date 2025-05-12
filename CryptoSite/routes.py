@@ -1,8 +1,11 @@
-from bottle import route, view, request, redirect
 import json
 import re
 from datetime import datetime
 import os
+from bottle import route, view, request, redirect, static_file, response
+from bottle import route, run, view, request, redirect, static_file
+import sys
+import io
 
 @route('/')
 @route('/home')
@@ -177,3 +180,110 @@ def articles():
         'phone': phone,
         'articles': articles
     }
+
+# АКТУАЛЬНЫЕ НОВОСТИ
+
+# Принудительно устанавливаем UTF-8 кодировку
+sys.stdout.reconfigure(encoding='utf-8')
+response.content_type = 'text/html; charset=utf-8'
+
+# Создаем папку data, если ее нет
+if not os.path.exists('data'):
+    os.makedirs('data')
+
+NEWS_FILE = 'data/newsdata.json'
+
+def load_news():
+    """Загрузка новостей из файла с обработкой кодировки"""
+    if not os.path.exists(NEWS_FILE):
+        return []
+    try:
+        with open(NEWS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError, UnicodeDecodeError) as e:
+        print(f"Ошибка загрузки файла: {e}")
+        return []
+
+def save_news(news_data):
+    """Сохранение новостей в файл с явным указанием кодировки"""
+    try:
+        with open(NEWS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(news_data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Ошибка сохранения файла: {e}")
+
+@route('/newspage')
+@view('newspage')
+def show_news():
+    """Отображение страницы с новостями"""
+    news_items = load_news()
+    # Сортировка по дате (новые сначала)
+    news_items.sort(key=lambda x: x.get('date', ''), reverse=True)
+    return dict(
+        title='Новости криптовалют',
+        year=datetime.now().year,
+        news_items=news_items,
+        error=None,
+        form_data={}
+    )
+
+@route('/newspage', method='POST')
+def add_news():
+    """Добавление новой новости с корректной обработкой кодировки"""
+    # Получаем данные из формы с использованием getunicode
+    title = request.forms.getunicode('title', '').strip()
+    author = request.forms.getunicode('author', '').strip()
+    content = request.forms.getunicode('content', '').strip()
+    date = request.forms.getunicode('date', '').strip()
+    
+    # Устанавливаем текущую дату, если не указана
+    if not date:
+        date = datetime.now().strftime('%Y-%m-%d')
+    
+    # Валидация данных
+    error = None
+    if not title or len(title) < 5:
+        error = "Заголовок должен содержать минимум 5 символов"
+    elif not author or len(author) < 2:
+        error = "Укажите имя автора (минимум 2 символа)"
+    elif not content or len(content) < 10:
+        error = "Содержание новости должно быть не менее 10 символов"
+    
+    news_items = load_news()
+    
+    if error:
+        return dict(
+            title='Новости криптовалют',
+            year=datetime.now().year,
+            news_items=news_items,
+            error=error,
+            form_data={
+                'title': title,
+                'author': author,
+                'content': content,
+                'date': date
+            }
+        )
+    
+    # Если ошибок нет, добавляем новость
+    new_item = {
+        'title': title,
+        'author': author,
+        'content': content,
+        'date': date,
+        'id': len(news_items) + 1  # Добавляем ID для подсветки
+    }
+    news_items.append(new_item)
+    save_news(news_items)
+    
+    # Перенаправляем с параметром для подсветки новой записи
+    redirect(f'/newspage?highlight={new_item["id"]}')
+
+@route('/static/<filename:path>')
+def serve_static(filename):
+    """Отдача статических файлов с указанием кодировки"""
+    return static_file(filename, root='static')
+
+if __name__ == '__main__':
+    # Явно указываем кодировку при запуске сервера
+    run(host='localhost', port=8080, debug=True, reloader=True)
