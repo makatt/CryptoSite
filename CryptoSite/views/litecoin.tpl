@@ -1,5 +1,6 @@
 % rebase('layout.tpl', title='Лайткойн (LTC)', year=year)
 
+
 <div class="container">
     <div class="jumbotron">
         <h1>Лайткойн (LTC)</h1>
@@ -76,6 +77,64 @@
                 <li class="list-group-item-ltc"><a href="{{ litecoin_official }}" target="_blank">Официальный сайт Лайткойн</a></li>
                 <li class="list-group-item-ltc"><a href="{{ reddit }}" target="_blank">Сообщество на Reddit</a></li>
             </ul>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Активные пользователи Лайткойн</h2>
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h3>Добавить нового пользователя</h3>
+                    <form method="POST" action="/litecoin" class="mb-4">
+                        <div class="form-group">
+                            <label for="username">Имя пользователя (никнейм):</label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{ username if defined('username') else '' }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Описание:</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required>{{ description if defined('description') else '' }}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date">Дата регистрации:</label>
+                            <input type="date" class="form-control" id="date" name="date" value="{{ date if defined('date') else '' }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Телефон (формат: +7XXXXXXXXXX, 11 цифр):</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ phone if defined('phone') else '' }}" pattern="\+7\d{10}" required>
+                        </div>
+                        
+                        % if defined('error') and error:
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                        % end
+                        
+                        <button type="submit" class="btn btn-primary">Добавить пользователя</button>
+                    </form>
+                </div>
+            </div>
+            
+            % if defined('users') and users:
+                <div class="list-group">
+                    % for user in users:
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ user['username'] }}</h5>
+                            <small>Зарегистрирован: {{ user['date'] }}</small>
+                        </div>
+                        <p class="mb-1">{{ user['description'] }}</p>
+                        <small>Телефон: {{ user['phone'] }}</small>
+                    </div>
+                    % end
+                </div>
+            % else:
+                <p>Пока нет активных пользователей.</p>
+            % end
         </div>
     </div>
 </div>
