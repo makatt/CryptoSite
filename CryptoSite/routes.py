@@ -1,5 +1,8 @@
-from bottle import route, view
+from bottle import route, view, request, redirect
+import json
+import re
 from datetime import datetime
+import os
 
 @route('/')
 @route('/home')
@@ -118,3 +121,59 @@ def how_it_works():
         title='История Лайткойна',
         year=datetime.now().year
     )
+
+#ПОЛЕЗНЫЕ СТАТЬИ
+
+ARTICLES_FILE = 'data/articles.json'  # путь к файлу с данными 
+
+def load_articles():
+    try:
+        with open(ARTICLES_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+def save_articles(articles):
+    with open(ARTICLES_FILE, 'w', encoding='utf-8') as f:
+        json.dump(articles, f, ensure_ascii=False, indent=4)
+
+@route('/articles', method=['GET', 'POST'])
+@view('articles')
+def articles():
+    error = ''
+    author = text = date = phone = ''
+    articles = load_articles()
+
+    if request.method == 'POST':
+        author = request.forms.get('author', '').strip()
+        text = request.forms.get('text', '').strip()
+        date = request.forms.get('date', '').strip()
+        phone = request.forms.get('phone', '').strip()
+
+        # Валидация
+        if not author or not text or not date or not phone:
+            error = 'Пожалуйста, заполните все поля.'
+        elif not re.match(r'^\+7\d{10}$', phone):
+            error = 'Телефон должен быть в формате +7XXXXXXXXXX'
+        elif not re.match(r'^\d{4}-\d{2}-\d{2}$', date):
+            error = 'Дата должна быть в формате ГГГГ-ММ-ДД'
+        else:
+            # Добавление статьи и сортировка по дате (свежие сверху)
+            articles.insert(0, {
+                'author': author,
+                'text': text,
+                'date': date,
+                'phone': phone
+            })
+            save_articles(articles)
+            redirect('/articles')  # Чтобы сбросить POST и очистить форму
+
+    return {
+        'year': datetime.now().year,
+        'error': error,
+        'author': author,
+        'text': text,
+        'date': date,
+        'phone': phone,
+        'articles': articles
+    }
