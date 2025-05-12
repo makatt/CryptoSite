@@ -1,4 +1,4 @@
-from bottle import route, view, request, redirect
+from bottle import route, static_file, view, request, redirect
 import json
 import re
 from datetime import datetime
@@ -177,3 +177,7 @@ def articles():
         'phone': phone,
         'articles': articles
     }
+
+@route('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root='static')
