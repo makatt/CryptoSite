@@ -127,7 +127,7 @@ def how_it_works():
 
 #ПОЛЕЗНЫЕ СТАТЬИ
 
-ARTICLES_FILE = 'data/articles.json'  # путь к файлу с данными 
+ARTICLES_FILE = 'data/articles.json'  # путь к файлу с данными
 
 def load_articles():
     try:
@@ -144,32 +144,36 @@ def save_articles(articles):
 @view('articles')
 def articles():
     error = ''
-    author = text = date = phone = ''
+    author = text = date = email = ''
     articles = load_articles()
 
     if request.method == 'POST':
         author = request.forms.get('author', '').strip()
         text = request.forms.get('text', '').strip()
         date = request.forms.get('date', '').strip()
-        phone = request.forms.get('phone', '').strip()
+        email = request.forms.get('email', '').strip()
 
         # Валидация
-        if not author or not text or not date or not phone:
+        if not author or not text or not date or not email:
             error = 'Пожалуйста, заполните все поля.'
-        elif not re.match(r'^\+7\d{10}$', phone):
-            error = 'Телефон должен быть в формате +7XXXXXXXXXX'
+        elif re.search(r'\d', author):
+            error = 'Имя автора не должно содержать цифр.'
         elif not re.match(r'^\d{4}-\d{2}-\d{2}$', date):
-            error = 'Дата должна быть в формате ГГГГ-ММ-ДД'
+            error = 'Дата должна быть в формате ГГГГ-ММ-ДД.'
+        elif not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+            error = 'Введите корректный e-mail.'
+        elif len(text) < 100:
+            error = 'Текст статьи должен содержать не менее 100 символов.'
         else:
             # Добавление статьи и сортировка по дате (свежие сверху)
             articles.insert(0, {
                 'author': author,
                 'text': text,
                 'date': date,
-                'phone': phone
+                'email': email
             })
             save_articles(articles)
-            redirect('/articles')  # Чтобы сбросить POST и очистить форму
+            redirect('/articles')  # Сброс POST-запроса и очистка формы
 
     return {
         'year': datetime.now().year,
@@ -177,9 +181,10 @@ def articles():
         'author': author,
         'text': text,
         'date': date,
-        'phone': phone,
+        'email': email,
         'articles': articles
     }
+
 
 # АКТУАЛЬНЫЕ НОВОСТИ
 
