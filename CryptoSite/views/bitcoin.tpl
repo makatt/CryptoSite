@@ -59,7 +59,7 @@
             <h3>Преимущества Bitcoin</h3>
             <ul>
                 <li><strong>Децентрализация:</strong> Bitcoin не контролируется ни одним правительством или организацией.</li>
-                <p><a class="btn btn-default btn-sm" href="{{ decentralization }}">Узнать больше &raquo;</a></p>
+                <p><a class="btn btn-default btn-sm" href="/decentralization">Узнать больше &raquo;</a></p>
                 <li><strong>Анонимность:</strong> Пользователи могут совершать транзакции без раскрытия личной информации.</li>
                 <li><strong>Безопасность:</strong> Блокчейн обеспечивает высокий уровень защиты данных.</li>
                 <li><strong>Глобальность:</strong> Bitcoin можно использовать в любой точке мира.</li>
@@ -106,3 +106,40 @@
         </div>
     </div>
 </div>
+
+<hr/>
+<h2>Отзывы</h2>
+
+% if error:
+  <div class="alert alert-danger">{{ error }}</div>
+% end
+
+<form method="post" class="mb-4">
+  <div class="form-group">
+    <label for="name">Имя</label>
+    <input id="name" name="name" value="{{ form_data.get('name','') }}" required class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label for="text">Комментарий</label>
+    <textarea id="text" name="text" required class="form-control">{{ form_data.get('text','') }}</textarea>
+  </div>
+  <!-- Поле "Дата" убрано -->
+  <div class="form-group">
+    <label for="phone">Телефон</label>
+    <input id="phone" name="phone" value="{{ form_data.get('phone','') }}" placeholder="+7XXXXXXXXXX" required class="form-control"/>
+  </div>
+  <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+
+% if reviews:
+  <ul class="list-group">
+  % for r in reviews:
+    <li class="list-group-item">
+      <strong>{{ r['name'] }}</strong> ({{ r['date'] }}, {{ r['phone'] }})<br/>
+      {{ r['text'] }}
+    </li>
+  % end
+  </ul>
+% else:
+  <p>Пока нет ни одного отзыва.</p>
+% end

@@ -4,8 +4,37 @@ from datetime import datetime
 import os
 from bottle import route, view, request, redirect, static_file, response
 from bottle import route, run, view, request, redirect, static_file
+from bottle import route, run, template, request, redirect, static_file, view
 import sys
 import io
+
+REVIEWS_FILE = 'data/reviews.json'
+
+def load_reviews():
+    """Загрузка отзывов из файла reviews.json"""
+    if not os.path.exists(REVIEWS_FILE):
+        return {}
+    try:
+        with open(REVIEWS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError, UnicodeDecodeError):
+        return {}
+
+def save_reviews(reviews_data):
+    """Сохранение отзывов в файл reviews.json"""
+    try:
+        with open(REVIEWS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(reviews_data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Ошибка сохранения отзывов: {e}")
+
+def validate_phone(phone):
+    """Проверяет формат +7XXXXXXXXXX"""
+    return bool(re.match(r'^\+7\d{10}$', phone))
+
+def validate_date(date_str):
+    """Проверяет формат ГГГГ-ММ-ДД"""
+    return bool(re.match(r'^\d{4}-\d{2}-\d{2}$', date_str))
 
 @route('/')
 @route('/home')
@@ -92,15 +121,49 @@ def news():
         year=datetime.now().year
     )
 
-@route('/bitcoin')
+@route('/bitcoin', method=['GET', 'POST'])
 @view('bitcoin')
 def bitcoin():
-    """Renders the bitcoin page."""
-    return dict(
-        title='История Биткойна',
-        year=datetime.now().year,
-        decentralization='/decentralization',
-    )
+    title = 'История Биткойна'
+    year = datetime.now().year
+
+    reviews_all = load_reviews()
+    btc_reviews = reviews_all.get('bitcoin', [])
+
+    error = None
+    if request.method == 'POST':
+        name  = request.forms.get('name', '').strip()
+        text  = request.forms.get('text', '').strip()
+        phone = request.forms.get('phone', '').strip()
+
+        # Валидация
+        if not all([name, text, phone]):
+            error = 'Пожалуйста, заполните все поля.'
+        elif not validate_phone(phone):
+            error = 'Телефон должен быть в формате +7XXXXXXXXXX'
+        else:
+            # Дата теперь проставляем сами
+            date = datetime.now().strftime('%Y-%m-%d')
+            review = {
+                'name':  name,
+                'text':  text,
+                'date':  date,
+                'phone': phone
+            }
+            btc_reviews.insert(0, review)
+            reviews_all['bitcoin'] = btc_reviews
+            save_reviews(reviews_all)
+            redirect('/bitcoin')
+
+    return {
+        'title':     title,
+        'year':      year,
+        'reviews':   btc_reviews,
+        'error':     error,
+        'form_data': request.forms
+    }
+
+
 
 @route('/litecoin')
 @view('litecoin')
@@ -189,17 +252,17 @@ def articles():
 # АКТУАЛЬНЫЕ НОВОСТИ
 
 # Принудительно устанавливаем UTF-8 кодировку
+import sys
 sys.stdout.reconfigure(encoding='utf-8')
-response.content_type = 'text/html; charset=utf-8'
 
 # Создаем папку data, если ее нет
 if not os.path.exists('data'):
     os.makedirs('data')
 
-NEWS_FILE = 'data/newsdata.json'
+NEWS_FILE = 'data/cryptonews.json'
 
 def load_news():
-    """Загрузка новостей из файла с обработкой кодировки"""
+    """Загрузка новостей о криптовалютах из файла"""
     if not os.path.exists(NEWS_FILE):
         return []
     try:
@@ -210,7 +273,7 @@ def load_news():
         return []
 
 def save_news(news_data):
-    """Сохранение новостей в файл с явным указанием кодировки"""
+    """Сохранение новостей в файл"""
     try:
         with open(NEWS_FILE, 'w', encoding='utf-8') as f:
             json.dump(news_data, f, ensure_ascii=False, indent=2)
@@ -220,12 +283,12 @@ def save_news(news_data):
 @route('/newspage')
 @view('newspage')
 def show_news():
-    """Отображение страницы с новостями"""
+    """Отображение страницы с новостями о криптовалютах"""
     news_items = load_news()
     # Сортировка по дате (новые сначала)
     news_items.sort(key=lambda x: x.get('date', ''), reverse=True)
     return dict(
-        title='Новости криптовалют',
+        title='Новые криптовалюты',
         year=datetime.now().year,
         news_items=news_items,
         error=None,
@@ -233,62 +296,71 @@ def show_news():
     )
 
 @route('/newspage', method='POST')
-def add_news():
-    """Добавление новой новости с корректной обработкой кодировки"""
-    # Получаем данные из формы с использованием getunicode
-    title = request.forms.getunicode('title', '').strip()
-    author = request.forms.getunicode('author', '').strip()
-    content = request.forms.getunicode('content', '').strip()
-    date = request.forms.getunicode('date', '').strip()
-    
-    # Устанавливаем текущую дату, если не указана
-    if not date:
-        date = datetime.now().strftime('%Y-%m-%d')
+def add_crypto():
+    """Добавление новой криптовалюты"""
+    # Получаем данные из формы
+    form_data = {
+        'title': request.forms.getunicode('title', '').strip(),
+        'symbol': request.forms.getunicode('symbol', '').strip().upper(),
+        'date': request.forms.getunicode('date', '').strip(),
+        'price': request.forms.getunicode('price', '0').strip(),
+        'website': request.forms.getunicode('website', '').strip(),
+        'content': request.forms.getunicode('content', '').strip(),
+        'status': request.forms.getunicode('status', 'upcoming').strip()
+    }
     
     # Валидация данных
     error = None
-    if not title or len(title) < 5:
-        error = "Заголовок должен содержать минимум 5 символов"
-    elif not author or len(author) < 2:
-        error = "Укажите имя автора (минимум 2 символа)"
-    elif not content or len(content) < 10:
-        error = "Содержание новости должно быть не менее 10 символов"
+    if not form_data['title'] or len(form_data['title']) < 2:
+        error = "Название монеты должно содержать минимум 2 символа"
+    elif not form_data['symbol'] or len(form_data['symbol']) < 2:
+        error = "Символ монеты должен содержать минимум 2 символа"
+    elif not form_data['date']:
+        error = "Укажите дату запуска"
+    elif not form_data['content'] or len(form_data['content']) < 10:
+        error = "Описание должно содержать минимум 10 символов"
     
+    # Загружаем текущие данные
     news_items = load_news()
     
     if error:
-        return dict(
-            title='Новости криптовалют',
+        return template('newspage',
+            title='Новые криптовалюты',
             year=datetime.now().year,
             news_items=news_items,
             error=error,
-            form_data={
-                'title': title,
-                'author': author,
-                'content': content,
-                'date': date
-            }
+            form_data=form_data
         )
     
-    # Если ошибок нет, добавляем новость
-    new_item = {
-        'title': title,
-        'author': author,
-        'content': content,
-        'date': date,
-        'id': len(news_items) + 1  # Добавляем ID для подсветки
+    try:
+        # Преобразуем цену в число
+        price = float(form_data['price']) if form_data['price'] else 0.0
+    except ValueError:
+        price = 0.0
+    
+    # Создаем новую запись
+    new_crypto = {
+        'title': form_data['title'],
+        'symbol': form_data['symbol'],
+        'date': form_data['date'],
+        'price': f"{price:.2f}",
+        'website': form_data['website'] if form_data['website'].startswith('http') else f"http://{form_data['website']}",
+        'content': form_data['content'],
+        'status': form_data['status'],
+        'id': len(news_items) + 1
     }
-    news_items.append(new_item)
+    
+    # Добавляем и сохраняем
+    news_items.append(new_crypto)
     save_news(news_items)
     
-    # Перенаправляем с параметром для подсветки новой записи
-    redirect(f'/newspage?highlight={new_item["id"]}')
+    # Перенаправляем с подсветкой новой записи
+    redirect(f'/newspage?highlight={new_crypto["id"]}')
 
 @route('/static/<filename:path>')
 def serve_static(filename):
-    """Отдача статических файлов с указанием кодировки"""
+    """Отдача статических файлов"""
     return static_file(filename, root='static')
 
 if __name__ == '__main__':
-    # Явно указываем кодировку при запуске сервера
     run(host='localhost', port=8080, debug=True, reloader=True)
