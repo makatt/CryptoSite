@@ -34,7 +34,16 @@
         <p><a class="btn btn-success" href="/articles">Перейти к статьям &raquo;</a></p>
     </div>
 </div>
+</div>
 
+<div class="row news-section">
+    <div class="col-md-12">
+    <div class="info-section p-4 mb-5 rounded shadow-sm">
+        <h2 class="mb-3">Актуальные новинки</h2>
+        <p>Новые актуальные монеты</p>
+        <p><a class="btn btn-success" href="/newspage">Перейти к новинкам &raquo;</a></p>
+    </div>
+</div>
 </div>
 
 <div class="row how-it-works">
