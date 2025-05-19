@@ -1,47 +1,50 @@
 # -*- coding: utf-8 -*-
 import json
 import re
-from datetime import datetime
 import os
-from bottle import route, view, request, redirect, static_file, response
-from bottle import route, run, view, request, redirect, static_file
-from bottle import route, run, template, request, redirect, static_file, view
-import sys
-import io
+from datetime import datetime
+from bottle import route, run, view, request, redirect, static_file, template, response
 
-REVIEWS_FILE = 'data/reviews.json'
+DATA_DIR = 'data'
+REVIEWS_FILE = os.path.join(DATA_DIR, 'reviews.json')
+ARTICLES_FILE = os.path.join(DATA_DIR, 'articles.json')
+NEWS_FILE = os.path.join(DATA_DIR, 'cryptonews.json')
 
-def load_reviews():
-    """Загрузка отзывов из файла reviews.json"""
-    if not os.path.exists(REVIEWS_FILE):
-        return {}
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
+
+# --------------- УТИЛИТЫ ЗАГРУЗКИ/СОХРАНЕНИЯ -----------------
+def load_json(filepath, default):
     try:
-        with open(REVIEWS_FILE, 'r', encoding='utf-8') as f:
+        if not os.path.exists(filepath):
+            return default
+        with open(filepath, 'r', encoding='utf-8') as f:
             return json.load(f)
-    except (json.JSONDecodeError, FileNotFoundError, UnicodeDecodeError):
-        return {}
+    except Exception:
+        return default
 
-def save_reviews(reviews_data):
-    """Сохранение отзывов в файл reviews.json"""
+def save_json(filepath, data):
     try:
-        with open(REVIEWS_FILE, 'w', encoding='utf-8') as f:
-            json.dump(reviews_data, f, ensure_ascii=False, indent=2)
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"Ошибка сохранения отзывов: {e}")
+        print(f"Ошибка сохранения {filepath}: {e}")
 
+# --------- ВАЛИДАТОРЫ --------------------
 def validate_phone(phone):
-    """Проверяет формат +7XXXXXXXXXX"""
     return bool(re.match(r'^\+7\d{10}$', phone))
 
 def validate_date(date_str):
-    """Проверяет формат ГГГГ-ММ-ДД"""
     return bool(re.match(r'^\d{4}-\d{2}-\d{2}$', date_str))
 
+def validate_email(email):
+    return bool(re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email))
+
+# ----------------- ГЛАВНЫЕ СТРАНИЦЫ -----------------
 @route('/')
 @route('/home')
 @view('index')
 def home():
-    """Renders the home page."""
     return dict(
         year=datetime.now().year,
         coindesk='https://www.coindesk.com',
@@ -57,123 +60,101 @@ def home():
         bitcoin_how_it_works='/how-it-works'
     )
 
-@route('/ethereum')
-@view('ethereum')
-def ethereum():
-    """Renders the home page."""
-    return dict(
-        year=datetime.now().year,
-        decentralization='/decentralization',
-        smart_contracts='/smart_contracts',
-        ethereum_org='https://ethereum.org',  # Официальный сайт Ethereum
-        ethereum_what_is='https://ethereum.org/what-is-ethereum',  # Что такое Ethereum
-        ethereum_smart_contracts='https://ethereum.org/smart-contracts',  # Смарт-контракты
-        ethereum_dapps='https://ethereum.org/dapps',  # Децентрализованные приложения (DApps)
-        ethereum_how_it_works='https://ethereum.org/en/staking/#what-is-staking',  # Как работает Ethereum
-        ethereum_whitepaper='https://ethereum.org/whitepaper',  # Официальный Whitepaper
-        ethereum_github='https://github.com/ethereum',  # Исходный код на GitHub
-        ethereum_community='https://ethereum.org/community', # Сообщество Ethereum
-        ethereum_graphic = 'https://ru.tradingview.com/chart/?symbol=BINANCE%3AETHUSDt'
-    )
-
-@route('/decentralization')
-@view('decentralization')
-def decentralization():
-    """Renders the decentralization page."""
-    return dict(
-        year=datetime.now().year,  
-        decentralization_wiki='https://ru.wikipedia.org/wiki/Децентрализация',  # Ссылка на Википедию
-        decentralization_basics='https://www.investopedia.com/terms/d/decentralization.asp',  # Основы децентрализации
-        blockchain_decentralization='https://www.coindesk.com/learn/what-is-decentralization-why-is-it-important',  # Децентрализация в блокчейне
-        decentralization_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-decentralization-in-blockchain',  # Преимущества децентрализации
-        decentralization_examples='https://www.blockchain-council.org/blockchain/examples-of-decentralized-systems-you-must-know',  # Примеры децентрализованных систем
-        decentralization_how_it_works='https://www.ibm.com/topics/decentralization'  # Как работает децентрализация
-    )
-
-@route('/smart_contracts')
-@view('smart_contracts')
-def smart_contracts():
-    """Renders the smart contracts page."""
-    return dict(
-        year=datetime.now().year,
-        smart_contracts_wiki='https://ru.wikipedia.org/wiki/Смарт-контракт',  # Ссылка на Википедию
-        smart_contracts_basics='https://www.investopedia.com/terms/s/smart-contracts.asp',  # Основы смарт-контрактов
-        smart_contracts_how_it_works='https://www.ibm.com/topics/smart-contracts',  # Как работают смарт-контракты
-        smart_contracts_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-smart-contracts',  # Преимущества смарт-контрактов
-        smart_contracts_examples='https://www.blockchain-council.org/blockchain/smart-contract-examples',  # Примеры использования
-        smart_contracts_creation='https://ethereum.org/en/developers/docs/smart-contracts'  # Создание смарт-контрактов
-    )
-
 @route('/contact')
 @view('contact')
 def contact():
-    """Renders the contact page."""
-    return dict(
-        title='Контакты',
-        year=datetime.now().year
-    )
+    return dict(title='Контакты', year=datetime.now().year)
 
 @route('/news')
 @view('news')
 def news():
-    """Renders the news page."""
-    return dict(
-        title='Новости',
-        year=datetime.now().year
-    )
+    return dict(title='Новости', year=datetime.now().year)
 
+# ------------------ BITCOIN ------------------------
 @route('/bitcoin', method=['GET', 'POST'])
 @view('bitcoin')
 def bitcoin():
-    title = 'История Биткойна'
-    year = datetime.now().year
-
-    reviews_all = load_reviews()
+    reviews_all = load_json(REVIEWS_FILE, {})
     btc_reviews = reviews_all.get('bitcoin', [])
-
     error = None
+
     if request.method == 'POST':
-        name  = request.forms.get('name', '').strip()
-        text  = request.forms.get('text', '').strip()
+        name = request.forms.get('name', '').strip()
+        text = request.forms.get('text', '').strip()
         phone = request.forms.get('phone', '').strip()
 
-        # Валидация
         if not all([name, text, phone]):
             error = 'Пожалуйста, заполните все поля.'
         elif not validate_phone(phone):
             error = 'Телефон должен быть в формате +7XXXXXXXXXX'
         else:
-            # Дата теперь проставляем сами
             date = datetime.now().strftime('%Y-%m-%d')
-            review = {
-                'name':  name,
-                'text':  text,
-                'date':  date,
-                'phone': phone
-            }
-            btc_reviews.insert(0, review)
+            btc_reviews.insert(0, {'name': name, 'text': text, 'date': date, 'phone': phone})
             reviews_all['bitcoin'] = btc_reviews
-            save_reviews(reviews_all)
+            save_json(REVIEWS_FILE, reviews_all)
             redirect('/bitcoin')
 
     return {
-        'title':     title,
-        'year':      year,
-        'reviews':   btc_reviews,
-        'error':     error,
+        'title': 'История Биткойна',
+        'year': datetime.now().year,
+        'reviews': btc_reviews,
+        'error': error,
         'form_data': request.forms
     }
 
+# ---------------- ETHEREUM -------------------
+@route('/ethereum')
+@view('ethereum')
+def ethereum():
+    return dict(
+        year=datetime.now().year,
+        decentralization='/decentralization',
+        smart_contracts='/smart_contracts',
+        ethereum_org='https://ethereum.org',
+        ethereum_what_is='https://ethereum.org/what-is-ethereum',
+        ethereum_smart_contracts='https://ethereum.org/smart-contracts',
+        ethereum_dapps='https://ethereum.org/dapps',
+        ethereum_how_it_works='https://ethereum.org/en/staking/#what-is-staking',
+        ethereum_whitepaper='https://ethereum.org/whitepaper',
+        ethereum_github='https://github.com/ethereum',
+        ethereum_community='https://ethereum.org/community',
+        ethereum_graphic='https://ru.tradingview.com/chart/?symbol=BINANCE%3AETHUSDt'
+    )
 
+@route('/decentralization')
+@view('decentralization')
+def decentralization():
+    return dict(
+        year=datetime.now().year,
+        decentralization_wiki='https://ru.wikipedia.org/wiki/Децентрализация',
+        decentralization_basics='https://www.investopedia.com/terms/d/decentralization.asp',
+        blockchain_decentralization='https://www.coindesk.com/learn/what-is-decentralization-why-is-it-important',
+        decentralization_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-decentralization-in-blockchain',
+        decentralization_examples='https://www.blockchain-council.org/blockchain/examples-of-decentralized-systems-you-must-know',
+        decentralization_how_it_works='https://www.ibm.com/topics/decentralization'
+    )
 
+@route('/smart_contracts')
+@view('smart_contracts')
+def smart_contracts():
+    return dict(
+        year=datetime.now().year,
+        smart_contracts_wiki='https://ru.wikipedia.org/wiki/Смарт-контракт',
+        smart_contracts_basics='https://www.investopedia.com/terms/s/smart-contracts.asp',
+        smart_contracts_how_it_works='https://www.ibm.com/topics/smart-contracts',
+        smart_contracts_benefits='https://www.forbes.com/sites/forbestechcouncil/2021/03/15/the-benefits-of-smart-contracts',
+        smart_contracts_examples='https://www.blockchain-council.org/blockchain/smart-contract-examples',
+        smart_contracts_creation='https://ethereum.org/en/developers/docs/smart-contracts'
+    )
+
+# ---------------- LITECOIN --------------------
 @route('/litecoin')
 @view('litecoin')
 def litecoin():
-    """Renders the about page."""
     return dict(
         title='История Лайткойна',
         year=datetime.now().year,
-                binance='https://binance.org/',
+        binance='https://binance.org/',
         coinbase='https://www.coinbase.com/',
         kraken='https://kraken.com/',
         litecoin_official='https://litecoin.org',
@@ -183,110 +164,53 @@ def litecoin():
 @route('/how-it-works')
 @view('howitworks')
 def how_it_works():
-    """Renders the about page."""
-    return dict(
-        title='История Лайткойна',
-        year=datetime.now().year
-    )
+    return dict(title='История Лайткойна', year=datetime.now().year)
 
-#ПОЛЕЗНЫЕ СТАТЬИ
-
-ARTICLES_FILE = 'data/articles.json'  # путь к файлу с данными
-
-def load_articles():
-    try:
-        with open(ARTICLES_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-def save_articles(articles):
-    with open(ARTICLES_FILE, 'w', encoding='utf-8') as f:
-        json.dump(articles, f, ensure_ascii=False, indent=4)
-
+# ---------------- СТАТЬИ ----------------------
 @route('/articles', method=['GET', 'POST'])
 @view('articles')
 def articles():
+    articles = load_json(ARTICLES_FILE, [])
     error = ''
-    author = text = date = email = ''
-    articles = load_articles()
+    form = {'author': '', 'text': '', 'date': '', 'email': ''}
 
     if request.method == 'POST':
-        author = request.forms.get('author', '').strip()
-        text = request.forms.get('text', '').strip()
-        date = request.forms.get('date', '').strip()
-        email = request.forms.get('email', '').strip()
+        form['author'] = request.forms.get('author', '').strip()
+        form['text'] = request.forms.get('text', '').strip()
+        form['date'] = request.forms.get('date', '').strip()
+        form['email'] = request.forms.get('email', '').strip()
 
-        # Валидация
-        if not author or not text or not date or not email:
+        if not all(form.values()):
             error = 'Пожалуйста, заполните все поля.'
-        elif re.search(r'\d', author):
+        elif re.search(r'\d', form['author']):
             error = 'Имя автора не должно содержать цифр.'
-        elif not re.match(r'^\d{4}-\d{2}-\d{2}$', date):
+        elif not validate_date(form['date']):
             error = 'Дата должна быть в формате ГГГГ-ММ-ДД.'
-        elif not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+        elif not validate_email(form['email']):
             error = 'Введите корректный e-mail.'
-        elif len(text) < 100:
+        elif len(form['text']) < 100:
             error = 'Текст статьи должен содержать не менее 100 символов.'
         else:
-            # Добавление статьи и сортировка по дате (свежие сверху)
-            articles.insert(0, {
-                'author': author,
-                'text': text,
-                'date': date,
-                'email': email
-            })
-            save_articles(articles)
-            redirect('/articles')  # Сброс POST-запроса и очистка формы
+            articles.insert(0, dict(form))
+            articles.sort(key=lambda x: x.get('date', ''), reverse=True)
+            save_json(ARTICLES_FILE, articles)
+            redirect('/articles')
 
     return {
         'year': datetime.now().year,
         'error': error,
-        'author': author,
-        'text': text,
-        'date': date,
-        'email': email,
+        'author': form['author'],
+        'text': form['text'],
+        'date': form['date'],
+        'email': form['email'],
         'articles': articles
     }
 
-
-# АКТУАЛЬНЫЕ НОВОСТИ
-
-# Принудительно устанавливаем UTF-8 кодировку
-import sys
-sys.stdout.reconfigure(encoding='utf-8')
-
-# Создаем папку data, если ее нет
-if not os.path.exists('data'):
-    os.makedirs('data')
-
-NEWS_FILE = 'data/cryptonews.json'
-
-def load_news():
-    """Загрузка новостей о криптовалютах из файла"""
-    if not os.path.exists(NEWS_FILE):
-        return []
-    try:
-        with open(NEWS_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except (json.JSONDecodeError, FileNotFoundError, UnicodeDecodeError) as e:
-        print(f"Ошибка загрузки файла: {e}")
-        return []
-
-def save_news(news_data):
-    """Сохранение новостей в файл"""
-    try:
-        with open(NEWS_FILE, 'w', encoding='utf-8') as f:
-            json.dump(news_data, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"Ошибка сохранения файла: {e}")
-
+# ---------------- НОВОСТИ О КРИПТОВАЛЮТАХ -------------------
 @route('/newspage')
 @view('newspage')
 def show_news():
-    """Отображение страницы с новостями о криптовалютах"""
-    news_items = load_news()
-    # Сортировка по дате (новые сначала)
+    news_items = load_json(NEWS_FILE, [])
     news_items.sort(key=lambda x: x.get('date', ''), reverse=True)
     return dict(
         title='Новые криптовалюты',
@@ -298,8 +222,6 @@ def show_news():
 
 @route('/newspage', method='POST')
 def add_crypto():
-    """Добавление новой криптовалюты"""
-    # Получаем данные из формы
     form_data = {
         'title': request.forms.getunicode('title', '').strip(),
         'symbol': request.forms.getunicode('symbol', '').strip().upper(),
@@ -309,8 +231,7 @@ def add_crypto():
         'content': request.forms.getunicode('content', '').strip(),
         'status': request.forms.getunicode('status', 'upcoming').strip()
     }
-    
-    # Валидация данных
+
     error = None
     if not form_data['title'] or len(form_data['title']) < 2:
         error = "Название монеты должно содержать минимум 2 символа"
@@ -320,47 +241,43 @@ def add_crypto():
         error = "Укажите дату запуска"
     elif not form_data['content'] or len(form_data['content']) < 10:
         error = "Описание должно содержать минимум 10 символов"
-    
-    # Загружаем текущие данные
-    news_items = load_news()
-    
+
+    news_items = load_json(NEWS_FILE, [])
+
     if error:
         return template('newspage',
-            title='Новые криптовалюты',
-            year=datetime.now().year,
-            news_items=news_items,
-            error=error,
-            form_data=form_data
-        )
-    
+                        title='Новые криптовалюты',
+                        year=datetime.now().year,
+                        news_items=news_items,
+                        error=error,
+                        form_data=form_data
+                        )
     try:
-        # Преобразуем цену в число
         price = float(form_data['price']) if form_data['price'] else 0.0
     except ValueError:
         price = 0.0
-    
-    # Создаем новую запись
+
+    website = form_data['website']
+    if website and not website.startswith('http'):
+        website = f"http://{website}"
+
     new_crypto = {
         'title': form_data['title'],
         'symbol': form_data['symbol'],
         'date': form_data['date'],
         'price': f"{price:.2f}",
-        'website': form_data['website'] if form_data['website'].startswith('http') else f"http://{form_data['website']}",
+        'website': website,
         'content': form_data['content'],
         'status': form_data['status'],
         'id': len(news_items) + 1
     }
-    
-    # Добавляем и сохраняем
     news_items.append(new_crypto)
-    save_news(news_items)
-    
-    # Перенаправляем с подсветкой новой записи
+    save_json(NEWS_FILE, news_items)
     redirect(f'/newspage?highlight={new_crypto["id"]}')
 
+# ------------------ STATIC -------------------
 @route('/static/<filename:path>')
 def serve_static(filename):
-    """Отдача статических файлов"""
     return static_file(filename, root='static')
 
 if __name__ == '__main__':
