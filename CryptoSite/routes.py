@@ -207,18 +207,7 @@ def articles():
     }
 
 # ---------------- НОВОСТИ О КРИПТОВАЛЮТАХ -------------------
-@route('/newspage')
-@view('newspage')
-def show_news():
-    news_items = load_json(NEWS_FILE, [])
-    news_items.sort(key=lambda x: x.get('date', ''), reverse=True)
-    return dict(
-        title='Новые криптовалюты',
-        year=datetime.now().year,
-        news_items=news_items,
-        error=None,
-        form_data={}
-    )
+from datetime import datetime
 
 @route('/newspage', method='POST')
 def add_crypto():
@@ -233,6 +222,7 @@ def add_crypto():
     }
 
     error = None
+    # Проверка обязательных полей
     if not form_data['title'] or len(form_data['title']) < 2:
         error = "Название монеты должно содержать минимум 2 символа"
     elif not form_data['symbol'] or len(form_data['symbol']) < 2:
@@ -241,6 +231,15 @@ def add_crypto():
         error = "Укажите дату запуска"
     elif not form_data['content'] or len(form_data['content']) < 10:
         error = "Описание должно содержать минимум 10 символов"
+    else:
+        # Проверка, что дата не больше сегодня
+        try:
+            input_date = datetime.strptime(form_data['date'], '%Y-%m-%d').date()
+            today = datetime.now().date()
+            if input_date > today:
+                error = "Дата запуска не должна быть в будущем"
+        except ValueError:
+            error = "Некорректный формат даты. Используйте ГГГГ-ММ-ДД."
 
     news_items = load_json(NEWS_FILE, [])
 
@@ -274,6 +273,7 @@ def add_crypto():
     news_items.append(new_crypto)
     save_json(NEWS_FILE, news_items)
     redirect(f'/newspage?highlight={new_crypto["id"]}')
+
 
 # ------------------ STATIC -------------------
 @route('/static/<filename:path>')
