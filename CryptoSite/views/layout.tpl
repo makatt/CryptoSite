@@ -10,24 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700|Poppins:400,700|Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap (локальный) -->
-    <!-- Bootstrap 5 (CDN) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap -->
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
-    <!-- Font Awesome: сначала локально, потом CDN -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="/static/content/font-awesome.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
           integrity="sha512-Fo3rlrZj/k7ujTTXABfQaR0MdSGF7xkKUqHkPj+6H/64FQ1Qc+KYs88RY8U1bXapXOPQkU6s5xZ2xCz4l/3P2w=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Ваши стили -->
     <link rel="stylesheet" href="/static/content/site.css">
     <link rel="stylesheet" href="/static/content/articles.css">
 
-    <!-- Modernizr (если используете какие-то HTML5-фичи в старых браузерах) -->
+    <!-- Modernizr -->
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
 </head>
 

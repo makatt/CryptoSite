@@ -20,7 +20,7 @@ class TestArticleValidation(unittest.TestCase):
         self.assertTrue(is_valid_date("2023-12-31"))
 
     def test_invalid_date_format_day(self):
-        self.assertFalse(is_valid_date("2023-02-30"))  # не существует
+        self.assertFalse(is_valid_date("2023-02-30")) 
 
     def test_invalid_date_format_wrong_sep(self):
         self.assertFalse(is_valid_date("2023/12/31"))

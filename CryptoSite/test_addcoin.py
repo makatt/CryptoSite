@@ -1,7 +1,7 @@
 ﻿import unittest
 from datetime import datetime
 import re
-from routes import add_crypto  # Импортируем функцию добавления криптовалюты
+from routes import add_crypto
 
 class TestCryptoInputValidation(unittest.TestCase):
 
