@@ -207,8 +207,6 @@ def articles():
     }
 
 # ---------------- НОВОСТИ О КРИПТОВАЛЮТАХ -------------------
-from datetime import datetime
-
 @route('/newspage', method='POST')
 def add_crypto():
     form_data = {
