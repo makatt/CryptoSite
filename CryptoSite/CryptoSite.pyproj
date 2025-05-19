@@ -36,6 +36,9 @@
   <ItemGroup>
     <Compile Include="app.py" />
     <Compile Include="routes.py" />
+    <Compile Include="test_addcoin.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test_validation.py">
       <SubType>Code</SubType>
     </Compile>
@@ -54,9 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="data\articles.json" />
-    <Content Include="data\newsdata.json">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="data\reviews.json">
       <SubType>Code</SubType>
     </Content>
