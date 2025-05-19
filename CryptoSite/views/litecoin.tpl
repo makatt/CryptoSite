@@ -1,4 +1,4 @@
-% rebase('layout.tpl', title='Лайткойн (LTC)', year=year)
+% rebase('layout.tpl', title='Litecoin (LTC)', year=year)
 
 
 <div class="container">
