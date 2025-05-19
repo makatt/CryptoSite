@@ -114,7 +114,7 @@
   <div class="alert alert-danger">{{ error }}</div>
 % end
 
-<form method="post" class="mb-4">
+<form method="post" class="mb-4" accept-charset="UTF-8">
   <div class="form-group">
     <label for="name">Имя</label>
     <input id="name" name="name" value="{{ form_data.get('name','') }}" required class="form-control"/>
@@ -134,7 +134,7 @@
 % if reviews:
   <ul class="list-group">
   % for r in reviews:
-    <li class="list-group-item">
+    <ul class="list-group review-list">
       <strong>{{ r['name'] }}</strong> ({{ r['date'] }}, {{ r['phone'] }})<br/>
       {{ r['text'] }}
     </li>

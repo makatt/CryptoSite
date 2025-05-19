@@ -8,6 +8,12 @@ body {
     font-size: 18px;
 }
 
+.review-list .list-group-item {
+    color: #212529 !important; /* почти чёрный */
+    background-color: #ffffff !important; /* белый фон */
+    border-color: #dee2e6; /* стандартная граница Bootstrap */
+}
+
 .navbar {
     width: 100%;
     padding-left: 0;
