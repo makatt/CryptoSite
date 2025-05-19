@@ -207,6 +207,19 @@ def articles():
     }
 
 # ---------------- НОВОСТИ О КРИПТОВАЛЮТАХ -------------------
+@route('/newspage')
+@view('newspage')
+def show_news():
+    news_items = load_json(NEWS_FILE, [])
+    news_items.sort(key=lambda x: x.get('date', ''), reverse=True)
+    return dict(
+        title='Новые криптовалюты',
+        year=datetime.now().year,
+        news_items=news_items,
+        error=None,
+        form_data={}
+    )
+
 @route('/newspage', method='POST')
 def add_crypto():
     form_data = {

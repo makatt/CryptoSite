@@ -22,7 +22,7 @@
     </InterpreterId>
     <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
     <TestFramework>unittest</TestFramework>
-    <WebBrowserPort>443</WebBrowserPort>
+    <WebBrowserPort>80</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
