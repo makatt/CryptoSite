@@ -123,7 +123,6 @@
     <label for="text">Комментарий</label>
     <textarea id="text" name="text" required class="form-control">{{ form_data.get('text','') }}</textarea>
   </div>
-  <!-- Поле "Дата" убрано -->
   <div class="form-group">
     <label for="phone">Телефон</label>
     <input id="phone" name="phone" value="{{ form_data.get('phone','') }}" placeholder="+7XXXXXXXXXX" required class="form-control"/>
