@@ -106,39 +106,71 @@
         </div>
     </div>
 </div>
-
 <hr/>
-<h2>Отзывы</h2>
+<h2 class="mb-4 pb-2 border-bottom">Отзывы</h2>
 
 % if error:
-  <div class="alert alert-danger">{{ error }}</div>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Закрыть">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 % end
 
-<form method="post" class="mb-4" accept-charset="UTF-8">
-  <div class="form-group">
-    <label for="name">Имя</label>
-    <input id="name" name="name" value="{{ form_data.get('name','') }}" required class="form-control"/>
+<form method="post" class="needs-validation mb-5" novalidate accept-charset="UTF-8">
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="name">Имя</label>
+      <input type="text" class="form-control" id="name" name="name"
+             value="{{ form_data.get('name','') }}" required pattern="^[^\d]+$">
+      <div class="invalid-feedback">
+        Пожалуйста, введите корректное имя (без цифр).
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="phone">Телефон</label>
+      <input type="tel" class="form-control" id="phone" name="phone"
+             value="{{ form_data.get('phone','') }}" placeholder="+7XXXXXXXXXX"
+             pattern="^\+7\d{10}$" required>
+      <div class="invalid-feedback">
+        Укажите номер в формате +7XXXXXXXXXX.
+      </div>
+    </div>
   </div>
+
   <div class="form-group">
     <label for="text">Комментарий</label>
-    <textarea id="text" name="text" required class="form-control">{{ form_data.get('text','') }}</textarea>
+    <textarea class="form-control" id="text" name="text" rows="4"
+              required minlength="10">{{ form_data.get('text','') }}</textarea>
+    <small class="form-text text-muted">
+      Минимум 10 символов.
+    </small>
+    <div class="invalid-feedback">
+      Пожалуйста, введите комментарий не короче 10 символов.
+    </div>
   </div>
-  <div class="form-group">
-    <label for="phone">Телефон</label>
-    <input id="phone" name="phone" value="{{ form_data.get('phone','') }}" placeholder="+7XXXXXXXXXX" required class="form-control"/>
+
+  <div class="text-center mt-4">
+    <button type="submit" class="btn btn-primary btn-lg px-4">
+      <i class="fas fa-comment-dots mr-2"></i>Оставить отзыв
+    </button>
   </div>
-  <button type="submit" class="btn btn-primary">Отправить</button>
 </form>
 
 % if reviews:
   <ul class="list-group">
   % for r in reviews:
-    <ul class="list-group review-list">
-      <strong>{{ r['name'] }}</strong> ({{ r['date'] }}, {{ r['phone'] }})<br/>
-      {{ r['text'] }}
+    <li class="list-group-item review-list">
+      <h5 class="mb-1">{{ r['name'] }} <small class="text-muted">({{ r['date'] }})</small></h5>
+      <p class="mb-1">{{ r['text'] }}</p>
+      <small class="text-muted"><i class="fas fa-phone-alt mr-1"></i>{{ r['phone'] }}</small>
     </li>
   % end
   </ul>
 % else:
-  <p>Пока нет ни одного отзыва.</p>
+  <div class="alert alert-info text-center">
+    <i class="fas fa-info-circle mr-2"></i>Пока нет ни одного отзыва.
+  </div>
 % end
