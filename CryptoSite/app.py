@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import json
-from bottle import route, request, template, redirect
+from bottle import route, run, view, request, template, redirect, static_file, response, hook
 from datetime import datetime
 import bottle
 import os
