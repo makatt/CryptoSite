@@ -2,7 +2,7 @@
 import re
 from datetime import datetime
 
-# Допустим, у тебя есть валидаторы где-то в routes.py или отдельном модуле
+# валидаторы 
 def is_valid_date(date_text):
     try:
         datetime.strptime(date_text, "%Y-%m-%d")
@@ -20,7 +20,7 @@ class TestArticleValidation(unittest.TestCase):
         self.assertTrue(is_valid_date("2023-12-31"))
 
     def test_invalid_date_format_day(self):
-        self.assertFalse(is_valid_date("2023-02-30"))  # не существует
+        self.assertFalse(is_valid_date("2023-02-30")) 
 
     def test_invalid_date_format_wrong_sep(self):
         self.assertFalse(is_valid_date("2023/12/31"))
@@ -43,6 +43,12 @@ class TestArticleValidation(unittest.TestCase):
 
     def test_invalid_phone_special_chars(self):
         self.assertFalse(is_valid_phone("+7 (123) 456*7890"))
+    def test_date_edge_leap_year(self):
+        self.assertTrue(is_valid_date("2024-02-29"))  # Високосный год
+
+    def test_phone_with_multiple_spaces(self):
+        self.assertTrue(is_valid_phone("+7  999  555  3333"))  # Лишние пробелы допустимы
+
 
     # --- Интеграция всех полей (пример) ---
     def test_form_all_fields_correct(self):

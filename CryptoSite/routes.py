@@ -166,7 +166,7 @@ def litecoin():
 def how_it_works():
     return dict(title='История Лайткойна', year=datetime.now().year)
 
-# ---------------- СТАТЬИ ----------------------
+# ----------------ПОЛЕЗНЫЕ СТАТЬИ ----------------------
 @route('/articles', method=['GET', 'POST'])
 @view('articles')
 def articles():
