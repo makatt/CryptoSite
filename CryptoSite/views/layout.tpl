@@ -23,8 +23,7 @@
           integrity="sha512-Fo3rlrZj/k7ujTTXABfQaR0MdSGF7xkKUqHkPj+6H/64FQ1Qc+KYs88RY8U1bXapXOPQkU6s5xZ2xCz4l/3P2w=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="/static/content/site.css">
-    <link rel="stylesheet" href="/static/content/articles.css">
+    <link rel="stylesheet" href="/static/content/style.css">
 
     <!-- Modernizr -->
     <script src="/static/scripts/modernizr-2.6.2.js"></script>

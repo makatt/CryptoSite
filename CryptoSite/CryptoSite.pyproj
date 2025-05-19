@@ -60,12 +60,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="requirements.txt" />
-    <Content Include="static\content\articles.css">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />
-    <Content Include="static\content\site.css" />
+    <Content Include="static\content\style.css" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />

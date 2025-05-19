@@ -161,10 +161,11 @@ def litecoin():
         reddit='https://reddi.com/litecoin'
     )
 
+# ---------------- Как это работает --------------------
 @route('/how-it-works')
 @view('howitworks')
 def how_it_works():
-    return dict(title='История Лайткойна', year=datetime.now().year)
+    return dict(title='Как это работает', year=datetime.now().year)
 
 # ----------------ПОЛЕЗНЫЕ СТАТЬИ ----------------------
 @route('/articles', method=['GET', 'POST'])
