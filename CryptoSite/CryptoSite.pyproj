@@ -37,13 +37,7 @@
   <ItemGroup>
     <Compile Include="app.py" />
     <Compile Include="routes.py" />
-    <Compile Include="test_review.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test_validation_coin.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test_validation_articles.py">
+    <Compile Include="test_cryptosite.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="views\newspage.tpl">
