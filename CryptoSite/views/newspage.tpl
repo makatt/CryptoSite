@@ -1,5 +1,4 @@
-﻿%# -*- coding: utf-8 -*-
-% rebase('layout.tpl', title=title, year=year)
+﻿% rebase('layout.tpl', title=title, year=year)
 
 <style>
     /* Основной черный фон для всей страницы */
