@@ -70,7 +70,8 @@ def contact():
 def news():
     return dict(title='Новости', year=datetime.now().year)
 
-# ------------------ BITCOIN ------------------------
+
+# ---------------- BITCOIN -------------------
 @route('/bitcoin', method=['GET', 'POST'])
 @view('bitcoin')
 def bitcoin():
@@ -79,28 +80,45 @@ def bitcoin():
     error = None
 
     if request.method == 'POST':
-        name = request.forms.getunicode('name', '').strip()
-        text = request.forms.getunicode('text', '').strip()
-        phone = request.forms.getunicode('phone', '').strip()
-
-        if not all([name, text, phone]):
-            error = 'Пожалуйста, заполните все поля.'
-        elif not validate_phone(phone):
-            error = 'Телефон должен быть в формате +7XXXXXXXXXX'
-        else:
-            date = datetime.now().strftime('%Y-%m-%d')
-            btc_reviews.insert(0, {'name': name, 'text': text, 'date': date, 'phone': phone})
-            reviews_all['bitcoin'] = btc_reviews
-            save_json(REVIEWS_FILE, reviews_all)
+        form_data = {
+            'name': request.forms.getunicode('name', '').strip(),
+            'text': request.forms.getunicode('text', '').strip(),
+            'phone': request.forms.getunicode('phone', '').strip()
+        }
+        error, cleaned_form_data = add_btc_review(form_data, btc_reviews, reviews_all)
+        if error is None:
             redirect('/bitcoin')
+        else:
+            form_data = cleaned_form_data
+    else:
+        form_data = {}
 
-    return {
-        'title': 'История Биткойна',
-        'year': datetime.now().year,
-        'reviews': btc_reviews,
-        'error': error,
-        'form_data': request.forms
-    }
+    return dict(
+        title='История Биткойна',
+        year=datetime.now().year,
+        reviews=btc_reviews,
+        error=error,
+        form_data=form_data
+    )
+
+def add_btc_review(form_data, btc_reviews, reviews_all):
+    name = form_data['name']
+    text = form_data['text']
+    phone = form_data['phone']
+    error = None
+
+    if not all([name, text, phone]):
+        error = 'Пожалуйста, заполните все поля.'
+    elif not validate_phone(phone):
+        error = 'Телефон должен быть в формате +7XXXXXXXXXX'
+    else:
+        date = datetime.now().strftime('%Y-%m-%d')
+        btc_reviews.insert(0, {'name': name, 'text': text, 'date': date, 'phone': phone})
+        reviews_all['bitcoin'] = btc_reviews
+        save_json(REVIEWS_FILE, reviews_all)
+        return None, {}
+
+    return error, form_data
 
 # ---------------- ETHEREUM -------------------
 @route('/ethereum')
@@ -285,12 +303,6 @@ def add_crypto():
     news_items.append(new_crypto)
     save_json(NEWS_FILE, news_items)
     redirect(f'/newspage?highlight={new_crypto["id"]}')
-
-
-# ------------------ STATIC -------------------
-@route('/static/<filename:path>')
-def serve_static(filename):
-    return static_file(filename, root='static')
 
 if __name__ == '__main__':
     run(host='localhost', port=8080, debug=True, reloader=True)
