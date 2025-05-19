@@ -1,3 +1,38 @@
+/* Стили для навигационной панели */
+.custom-navbar {
+    background-color: #121212;
+    padding: 12px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Poppins', sans-serif;
+}
+
+    .custom-navbar .navbar-brand {
+        font-family: 'Orbitron', sans-serif;
+        color: #f0b90b;
+        font-size: 1.6rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .custom-navbar .nav-link {
+        color: #e0e0e0;
+        margin-left: 20px;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+        .custom-navbar .nav-link:hover {
+            color: #f0b90b;
+        }
+
+.navbar-toggler {
+    border-color: #e0e0e0;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28240,185,11,1%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
 body {
     margin: 0;
     padding: 0;
