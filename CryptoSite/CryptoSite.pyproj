@@ -38,7 +38,7 @@
     <Compile Include="test_addcoin.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test_validation.py">
+    <Compile Include="test_validation_articles.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="views\newspage.tpl">
