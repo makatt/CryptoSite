@@ -24,7 +24,7 @@
     <TestFramework>unittest</TestFramework>
     <WebBrowserPort>80</WebBrowserPort>
     <UnitTestPattern>test*.py</UnitTestPattern>
-    <UnitTestRootDirectory>./</UnitTestRootDirectory>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,13 +37,13 @@
   <ItemGroup>
     <Compile Include="app.py" />
     <Compile Include="routes.py" />
+    <Compile Include="test_review.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test_validation_coin.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="test_validation_articles.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test_validation_review.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="views\newspage.tpl">
