@@ -79,9 +79,9 @@ def bitcoin():
     error = None
 
     if request.method == 'POST':
-        name = request.forms.get('name', '').strip()
-        text = request.forms.get('text', '').strip()
-        phone = request.forms.get('phone', '').strip()
+        name = request.forms.getunicode('name', '').strip()
+        text = request.forms.getunicode('text', '').strip()
+        phone = request.forms.getunicode('phone', '').strip()
 
         if not all([name, text, phone]):
             error = 'Пожалуйста, заполните все поля.'
@@ -175,10 +175,10 @@ def articles():
     form = {'author': '', 'text': '', 'date': '', 'email': ''}
 
     if request.method == 'POST':
-        form['author'] = request.forms.get('author', '').strip()
-        form['text'] = request.forms.get('text', '').strip()
-        form['date'] = request.forms.get('date', '').strip()
-        form['email'] = request.forms.get('email', '').strip()
+        form['author'] = request.forms.getunicode('author', '').strip()
+        form['text'] = request.forms.getunicode('text', '').strip()
+        form['date'] = request.forms.getunicode('date', '').strip()
+        form['email'] = request.forms.getunicode('email', '').strip()
 
         if not all(form.values()):
             error = 'Пожалуйста, заполните все поля.'
