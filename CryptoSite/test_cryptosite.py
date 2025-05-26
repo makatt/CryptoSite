@@ -5,6 +5,7 @@ from routes import validate_phone, validate_date
 import re
 from routes import add_crypto
 from routes import add_btc_review
+from routes import add_ltc_user
 
 def is_valid_date(date_text):
     try:
@@ -252,6 +253,152 @@ class TestAddCryptoFunction(unittest.TestCase):
             'content': 'Первая и самая известная криптовалюта',
             'status': 'active'
         }
+
+
+class TestLitecoinFunctionality(unittest.TestCase):
+    def setUp(self):
+        # Создаем заглушку для save_json
+        self.dummy_save = DummySaveJson()
+        import routes
+        self.old_save_json = routes.save_json
+        routes.save_json = self.dummy_save
+        
+        # Тестовые данные
+        self.valid_user_data = {
+            'username': 'testuser',
+            'description': 'Valid description with more than 10 chars',
+            'date': datetime.now().strftime('%Y-%m-%d'),
+            'phone': '+79123456789'
+        }
+        
+    def tearDown(self):
+        # Восстанавливаем оригинальную функцию
+        import routes
+        routes.save_json = self.old_save_json
+    
+    def test_add_ltc_user_valid(self):
+        """Тест добавления валидного пользователя Litecoin"""
+        ltc_users = []
+        users_all = {}
+        
+        error, _ = add_ltc_user(self.valid_user_data, ltc_users, users_all)
+        
+        self.assertIsNone(error)
+        self.assertEqual(len(ltc_users), 1)
+        self.assertEqual(ltc_users[0]['username'], 'testuser')
+        self.assertTrue(self.dummy_save.called)
+        self.assertIn('litecoin', self.dummy_save.last_data)
+    
+    def test_add_ltc_user_missing_fields(self):
+        """Тест проверки обязательных полей"""
+        test_cases = [
+            ({**self.valid_user_data, 'username': ''}, 'Пожалуйста, укажите имя пользователя'),
+            ({**self.valid_user_data, 'description': ''}, 'Пожалуйста, добавьте описание'),
+            ({**self.valid_user_data, 'date': ''}, 'Пожалуйста, укажите дату'),
+            ({**self.valid_user_data, 'phone': ''}, 'Пожалуйста, укажите телефон')
+        ]
+        
+        for data, expected_error in test_cases:
+            ltc_users = []
+            users_all = {}
+            error, _ = add_ltc_user(data, ltc_users, users_all)
+            self.assertEqual(error, expected_error)
+            self.assertEqual(len(ltc_users), 0)
+    
+    def test_add_ltc_user_invalid_phone(self):
+        """Тест невалидных номеров телефона"""
+        invalid_phones = [
+            '89123456789',    # без +
+            '+7912345678',    # 9 цифр
+            '+791234567890',  # 11 цифр
+            '+7abcdefghij',   # буквы
+            '+7 123 456 78 90' # с пробелами
+        ]
+        
+        for phone in invalid_phones:
+            data = {**self.valid_user_data, 'phone': phone}
+            ltc_users = []
+            users_all = {}
+            error, _ = add_ltc_user(data, ltc_users, users_all)
+            self.assertEqual(error, 'Телефон должен быть в формате +7XXXXXXXXXX')
+            self.assertEqual(len(ltc_users), 0)
+    
+    def test_add_ltc_user_invalid_date(self):
+        """Тест невалидных дат"""
+        invalid_dates = [
+            '2023/01/01',  # неправильный разделитель
+            '01-01-2023',   # неправильный порядок
+            '2023-13-01',   # несуществующий месяц
+            '2023-01-32',   # несуществующий день
+            'not-a-date'    # не дата
+        ]
+        
+        for date in invalid_dates:
+            data = {**self.valid_user_data, 'date': date}
+            ltc_users = []
+            users_all = {}
+            error, _ = add_ltc_user(data, ltc_users, users_all)
+            self.assertEqual(error, 'Неверный формат даты. Используйте YYYY-MM-DD')
+            self.assertEqual(len(ltc_users), 0)
+    
+    def test_add_ltc_user_short_description(self):
+        """Тест слишком короткого описания"""
+        data = {**self.valid_user_data, 'description': 'short'}
+        ltc_users = []
+        users_all = {}
+        error, _ = add_ltc_user(data, ltc_users, users_all)
+        self.assertEqual(error, 'Описание должно содержать минимум 10 символов')
+        self.assertEqual(len(ltc_users), 0)
+    
+    def test_add_ltc_user_duplicate_username(self):
+        """Тест дублирования имени пользователя"""
+        ltc_users = [{
+            'username': 'existing_user',
+            'description': 'Existing user description',
+            'date': '2023-01-01',
+            'phone': '+79123456789'
+        }]
+        users_all = {'litecoin': ltc_users}
+        
+        data = {**self.valid_user_data, 'username': 'existing_user'}
+        error, _ = add_ltc_user(data, ltc_users, users_all)
+        self.assertEqual(error, 'Пользователь с таким именем уже существует')
+        self.assertEqual(len(ltc_users), 1)  # Проверяем, что новый не добавился
+    
+    def test_add_ltc_user_case_insensitive_duplicate(self):
+        """Тест дублирования с разным регистром"""
+        ltc_users = [{
+            'username': 'ExistingUser',
+            'description': 'Existing user description',
+            'date': '2023-01-01',
+            'phone': '+79123456789'
+        }]
+        users_all = {'litecoin': ltc_users}
+        
+        data = {**self.valid_user_data, 'username': 'existinguser'}
+        error, _ = add_ltc_user(data, ltc_users, users_all)
+        self.assertEqual(error, 'Пользователь с таким именем уже существует')
+        self.assertEqual(len(ltc_users), 1)
+    
+    def test_add_multiple_ltc_users(self):
+        """Тест добавления нескольких пользователей"""
+        ltc_users = []
+        users_all = {}
+        
+        # Первый пользователь
+        user1 = {**self.valid_user_data, 'username': 'user1'}
+        error, _ = add_ltc_user(user1, ltc_users, users_all)
+        self.assertIsNone(error)
+        
+        # Второй пользователь
+        user2 = {**self.valid_user_data, 'username': 'user2'}
+        error, _ = add_ltc_user(user2, ltc_users, users_all)
+        self.assertIsNone(error)
+        
+        self.assertEqual(len(ltc_users), 2)
+        self.assertEqual(ltc_users[0]['username'], 'user2')  # Последний добавленный первый
+        self.assertEqual(ltc_users[1]['username'], 'user1')
+        self.assertTrue(self.dummy_save.called)
 
 if __name__ == '__main__':
     unittest.main()

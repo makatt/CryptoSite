@@ -165,19 +165,92 @@ def smart_contracts():
         smart_contracts_creation='https://ethereum.org/en/developers/docs/smart-contracts'
     )
 
-# ---------------- LITECOIN --------------------
-@route('/litecoin')
+# ---------------- LITECOIN -------------------
+@route('/litecoin', method=['GET', 'POST'])
 @view('litecoin')
 def litecoin():
+    users_all = load_json('data/users.json', {})
+    ltc_users = users_all.get('litecoin', [])
+    error = None
+    form_data = {
+        'date': datetime.now().strftime('%Y-%m-%d'),
+        'username': '',
+        'description': '',
+        'phone': ''
+    }
+
+    if request.method == 'POST':
+        form_data = {
+            'username': request.forms.getunicode('username', '').strip(),
+            'description': request.forms.getunicode('description', '').strip(),
+            'date': request.forms.getunicode('date', '').strip(),
+            'phone': request.forms.getunicode('phone', '').strip()
+        }
+        
+        error, cleaned_form_data = add_ltc_user(form_data, ltc_users, users_all)
+        form_data = cleaned_form_data
+
     return dict(
-        title='История Лайткойна',
+        title='Лайткойн (LTC)',
         year=datetime.now().year,
+        users=ltc_users,
+        error=error,
+        username=form_data.get('username', ''),
+        description=form_data.get('description', ''),
+        date=form_data.get('date', ''),
+        phone=form_data.get('phone', ''),
         binance='https://binance.org/',
         coinbase='https://www.coinbase.com/',
         kraken='https://kraken.com/',
         litecoin_official='https://litecoin.org',
-        reddit='https://reddi.com/litecoin'
+        reddit='https://reddit.com/r/litecoin'
     )
+
+def add_ltc_user(form_data, ltc_users, users_all):
+    username = form_data['username']
+    description = form_data['description']
+    date = form_data['date']
+    phone = form_data['phone']
+    error = None
+
+    if not username:
+        error = 'Пожалуйста, укажите имя пользователя'
+    elif not description:
+        error = 'Пожалуйста, добавьте описание'
+    elif len(description) < 10:
+        error = 'Описание должно содержать минимум 10 символов'
+    elif not date:
+        error = 'Пожалуйста, укажите дату'
+    elif not phone:
+        error = 'Пожалуйста, укажите телефон'
+    elif not validate_phone(phone):
+        error = 'Телефон должен быть в формате +7XXXXXXXXXX (11 цифр после +7)'
+    else:
+        try:
+            datetime.strptime(date, '%Y-%m-%d')
+        except ValueError:
+            error = 'Неверный формат даты. Используйте ГГГГ-ММ-ДД'
+        
+        if not error:
+            if any(user['username'].lower() == username.lower() for user in ltc_users):
+                error = 'Пользователь с таким именем уже существует'
+            else:
+                ltc_users.insert(0, {
+                    'username': username,
+                    'description': description,
+                    'date': date,
+                    'phone': phone
+                })
+                
+                users_all['litecoin'] = ltc_users
+                
+                try:
+                    save_json('data/users.json', users_all)
+                    return None, {}
+                except Exception as e:
+                    error = f'Ошибка сохранения данных: {str(e)}'
+
+    return error, form_data
 
 # ---------------- Как это работает --------------------
 @route('/how-it-works')
