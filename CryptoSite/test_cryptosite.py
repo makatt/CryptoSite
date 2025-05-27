@@ -310,18 +310,20 @@ class TestLitecoinFunctionality(unittest.TestCase):
         invalid_phones = [
             '89123456789',    # без +
             '+7912345678',    # 9 цифр
-            '+791234567890',  # 11 цифр
+            '+791234567890',  # 11 цифр (but 12 total, which is invalid)
             '+7abcdefghij',   # буквы
             '+7 123 456 78 90' # с пробелами
         ]
-        
+    
+        expected_error = 'Телефон должен быть в формате +7XXXXXXXXXX (11 цифр после +7)'
+    
         for phone in invalid_phones:
             data = {**self.valid_user_data, 'phone': phone}
             ltc_users = []
             users_all = {}
             error, _ = add_ltc_user(data, ltc_users, users_all)
-            self.assertEqual(error, 'Телефон должен быть в формате +7XXXXXXXXXX')
-            self.assertEqual(len(ltc_users), 0)
+            self.assertEqual(error, expected_error)  # Check for the exact error message
+            self.assertEqual(len(ltc_users), 0)  # Ensure no user was added
     
     def test_add_ltc_user_invalid_date(self):
         """Тест невалидных дат"""
@@ -332,13 +334,13 @@ class TestLitecoinFunctionality(unittest.TestCase):
             '2023-01-32',   # несуществующий день
             'not-a-date'    # не дата
         ]
-        
+    
         for date in invalid_dates:
             data = {**self.valid_user_data, 'date': date}
             ltc_users = []
             users_all = {}
             error, _ = add_ltc_user(data, ltc_users, users_all)
-            self.assertEqual(error, 'Неверный формат даты. Используйте YYYY-MM-DD')
+            self.assertEqual(error, 'Неверный формат даты. Используйте ГГГГ-ММ-ДД')
             self.assertEqual(len(ltc_users), 0)
     
     def test_add_ltc_user_short_description(self):
